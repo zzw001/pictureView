@@ -1,0 +1,10 @@
+E:\dotnet\PictureView\PictureView\bin\Debug\PictureView.exe.config
+E:\dotnet\PictureView\PictureView\bin\Debug\PictureView.exe
+E:\dotnet\PictureView\PictureView\bin\Debug\PictureView.pdb
+E:\dotnet\PictureView\PictureView\obj\Debug\PictureView.Form1.resources
+E:\dotnet\PictureView\PictureView\obj\Debug\PictureView.Properties.Resources.resources
+E:\dotnet\PictureView\PictureView\obj\Debug\PictureView.csproj.GenerateResource.Cache
+E:\dotnet\PictureView\PictureView\obj\Debug\PictureView.csproj.CoreCompileInputs.cache
+E:\dotnet\PictureView\PictureView\obj\Debug\PictureView.exe
+E:\dotnet\PictureView\PictureView\obj\Debug\PictureView.pdb
+E:\dotnet\PictureView\PictureView\obj\Debug\PictureView.csprojResolveAssemblyReference.cache
