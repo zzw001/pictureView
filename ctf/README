@@ -1,0 +1,1 @@
+减少一些没有用到的配置，原来配置运行不起来，加Tomcat7服务器运行,需要改jdbc.propertis的url，可能需要到project 结构视图中手动把包加入到webapp的output中，现在开始做注册登录界面.

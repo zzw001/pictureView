@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="scau.aotu.biz.dao.ControlMapper" >
+  <resultMap id="BaseResultMap" type="scau.aotu.biz.model.Control" >
+    <id column="ctl_id" property="ctlId" jdbcType="INTEGER" />
+    <result column="per_id" property="perId" jdbcType="INTEGER" />
+    <result column="ctl_source" property="ctlSource" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    ctl_id, per_id, ctl_source
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="scau.aotu.biz.model.ControlExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from control
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from control
+    where ctl_id = #{ctlId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from control
+    where ctl_id = #{ctlId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="scau.aotu.biz.model.ControlExample" >
+    delete from control
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="scau.aotu.biz.model.Control" >
+    insert into control (ctl_id, per_id, ctl_source
+      )
+    values (#{ctlId,jdbcType=INTEGER}, #{perId,jdbcType=INTEGER}, #{ctlSource,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="scau.aotu.biz.model.Control" >
+    insert into control
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="ctlId != null" >
+        ctl_id,
+      </if>
+      <if test="perId != null" >
+        per_id,
+      </if>
+      <if test="ctlSource != null" >
+        ctl_source,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="ctlId != null" >
+        #{ctlId,jdbcType=INTEGER},
+      </if>
+      <if test="perId != null" >
+        #{perId,jdbcType=INTEGER},
+      </if>
+      <if test="ctlSource != null" >
+        #{ctlSource,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="scau.aotu.biz.model.ControlExample" resultType="java.lang.Integer" >
+    select count(*) from control
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update control
+    <set >
+      <if test="record.ctlId != null" >
+        ctl_id = #{record.ctlId,jdbcType=INTEGER},
+      </if>
+      <if test="record.perId != null" >
+        per_id = #{record.perId,jdbcType=INTEGER},
+      </if>
+      <if test="record.ctlSource != null" >
+        ctl_source = #{record.ctlSource,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update control
+    set ctl_id = #{record.ctlId,jdbcType=INTEGER},
+      per_id = #{record.perId,jdbcType=INTEGER},
+      ctl_source = #{record.ctlSource,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="scau.aotu.biz.model.Control" >
+    update control
+    <set >
+      <if test="perId != null" >
+        per_id = #{perId,jdbcType=INTEGER},
+      </if>
+      <if test="ctlSource != null" >
+        ctl_source = #{ctlSource,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ctl_id = #{ctlId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="scau.aotu.biz.model.Control" >
+    update control
+    set per_id = #{perId,jdbcType=INTEGER},
+      ctl_source = #{ctlSource,jdbcType=VARCHAR}
+    where ctl_id = #{ctlId,jdbcType=INTEGER}
+  </update>
+</mapper>

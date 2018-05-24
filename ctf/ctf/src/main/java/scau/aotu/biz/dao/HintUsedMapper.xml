@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="scau.aotu.biz.dao.HintUsedMapper" >
+  <resultMap id="BaseResultMap" type="scau.aotu.biz.model.HintUsed" >
+    <id column="hint_used_id" property="hintUsedId" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="chal_id" property="chalId" jdbcType="VARCHAR" />
+    <result column="hint_id" property="hintId" jdbcType="INTEGER" />
+    <result column="used_time" property="usedTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    hint_used_id, user_id, chal_id, hint_id, used_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="scau.aotu.biz.model.HintUsedExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from hint_used
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from hint_used
+    where hint_used_id = #{hintUsedId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from hint_used
+    where hint_used_id = #{hintUsedId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="scau.aotu.biz.model.HintUsedExample" >
+    delete from hint_used
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="scau.aotu.biz.model.HintUsed" >
+    insert into hint_used (hint_used_id, user_id, chal_id, 
+      hint_id, used_time)
+    values (#{hintUsedId,jdbcType=INTEGER}, #{userId,jdbcType=VARCHAR}, #{chalId,jdbcType=VARCHAR}, 
+      #{hintId,jdbcType=INTEGER}, #{usedTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="scau.aotu.biz.model.HintUsed" >
+    insert into hint_used
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="hintUsedId != null" >
+        hint_used_id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="chalId != null" >
+        chal_id,
+      </if>
+      <if test="hintId != null" >
+        hint_id,
+      </if>
+      <if test="usedTime != null" >
+        used_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="hintUsedId != null" >
+        #{hintUsedId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="chalId != null" >
+        #{chalId,jdbcType=VARCHAR},
+      </if>
+      <if test="hintId != null" >
+        #{hintId,jdbcType=INTEGER},
+      </if>
+      <if test="usedTime != null" >
+        #{usedTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="scau.aotu.biz.model.HintUsedExample" resultType="java.lang.Integer" >
+    select count(*) from hint_used
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update hint_used
+    <set >
+      <if test="record.hintUsedId != null" >
+        hint_used_id = #{record.hintUsedId,jdbcType=INTEGER},
+      </if>
+      <if test="record.userId != null" >
+        user_id = #{record.userId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.chalId != null" >
+        chal_id = #{record.chalId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.hintId != null" >
+        hint_id = #{record.hintId,jdbcType=INTEGER},
+      </if>
+      <if test="record.usedTime != null" >
+        used_time = #{record.usedTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update hint_used
+    set hint_used_id = #{record.hintUsedId,jdbcType=INTEGER},
+      user_id = #{record.userId,jdbcType=VARCHAR},
+      chal_id = #{record.chalId,jdbcType=VARCHAR},
+      hint_id = #{record.hintId,jdbcType=INTEGER},
+      used_time = #{record.usedTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="scau.aotu.biz.model.HintUsed" >
+    update hint_used
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="chalId != null" >
+        chal_id = #{chalId,jdbcType=VARCHAR},
+      </if>
+      <if test="hintId != null" >
+        hint_id = #{hintId,jdbcType=INTEGER},
+      </if>
+      <if test="usedTime != null" >
+        used_time = #{usedTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where hint_used_id = #{hintUsedId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="scau.aotu.biz.model.HintUsed" >
+    update hint_used
+    set user_id = #{userId,jdbcType=VARCHAR},
+      chal_id = #{chalId,jdbcType=VARCHAR},
+      hint_id = #{hintId,jdbcType=INTEGER},
+      used_time = #{usedTime,jdbcType=TIMESTAMP}
+    where hint_used_id = #{hintUsedId,jdbcType=INTEGER}
+  </update>
+</mapper>

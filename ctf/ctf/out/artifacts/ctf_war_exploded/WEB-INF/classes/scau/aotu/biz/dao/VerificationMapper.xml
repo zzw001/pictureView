@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="scau.aotu.biz.dao.VerificationMapper" >
+  <resultMap id="BaseResultMap" type="scau.aotu.biz.model.Verification" >
+    <id column="veri_id" property="veriId" jdbcType="INTEGER" />
+    <result column="chal_id" property="chalId" jdbcType="VARCHAR" />
+    <result column="verifitor_id" property="verifitorId" jdbcType="VARCHAR" />
+    <result column="verify_state" property="verifyState" jdbcType="INTEGER" />
+    <result column="verify_desc" property="verifyDesc" jdbcType="VARCHAR" />
+    <result column="verify_time" property="verifyTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    veri_id, chal_id, verifitor_id, verify_state, verify_desc, verify_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="scau.aotu.biz.model.VerificationExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from verification
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from verification
+    where veri_id = #{veriId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from verification
+    where veri_id = #{veriId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="scau.aotu.biz.model.VerificationExample" >
+    delete from verification
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="scau.aotu.biz.model.Verification" >
+    insert into verification (veri_id, chal_id, verifitor_id, 
+      verify_state, verify_desc, verify_time
+      )
+    values (#{veriId,jdbcType=INTEGER}, #{chalId,jdbcType=VARCHAR}, #{verifitorId,jdbcType=VARCHAR}, 
+      #{verifyState,jdbcType=INTEGER}, #{verifyDesc,jdbcType=VARCHAR}, #{verifyTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="scau.aotu.biz.model.Verification" >
+    insert into verification
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="veriId != null" >
+        veri_id,
+      </if>
+      <if test="chalId != null" >
+        chal_id,
+      </if>
+      <if test="verifitorId != null" >
+        verifitor_id,
+      </if>
+      <if test="verifyState != null" >
+        verify_state,
+      </if>
+      <if test="verifyDesc != null" >
+        verify_desc,
+      </if>
+      <if test="verifyTime != null" >
+        verify_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="veriId != null" >
+        #{veriId,jdbcType=INTEGER},
+      </if>
+      <if test="chalId != null" >
+        #{chalId,jdbcType=VARCHAR},
+      </if>
+      <if test="verifitorId != null" >
+        #{verifitorId,jdbcType=VARCHAR},
+      </if>
+      <if test="verifyState != null" >
+        #{verifyState,jdbcType=INTEGER},
+      </if>
+      <if test="verifyDesc != null" >
+        #{verifyDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="verifyTime != null" >
+        #{verifyTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="scau.aotu.biz.model.VerificationExample" resultType="java.lang.Integer" >
+    select count(*) from verification
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update verification
+    <set >
+      <if test="record.veriId != null" >
+        veri_id = #{record.veriId,jdbcType=INTEGER},
+      </if>
+      <if test="record.chalId != null" >
+        chal_id = #{record.chalId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.verifitorId != null" >
+        verifitor_id = #{record.verifitorId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.verifyState != null" >
+        verify_state = #{record.verifyState,jdbcType=INTEGER},
+      </if>
+      <if test="record.verifyDesc != null" >
+        verify_desc = #{record.verifyDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.verifyTime != null" >
+        verify_time = #{record.verifyTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update verification
+    set veri_id = #{record.veriId,jdbcType=INTEGER},
+      chal_id = #{record.chalId,jdbcType=VARCHAR},
+      verifitor_id = #{record.verifitorId,jdbcType=VARCHAR},
+      verify_state = #{record.verifyState,jdbcType=INTEGER},
+      verify_desc = #{record.verifyDesc,jdbcType=VARCHAR},
+      verify_time = #{record.verifyTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="scau.aotu.biz.model.Verification" >
+    update verification
+    <set >
+      <if test="chalId != null" >
+        chal_id = #{chalId,jdbcType=VARCHAR},
+      </if>
+      <if test="verifitorId != null" >
+        verifitor_id = #{verifitorId,jdbcType=VARCHAR},
+      </if>
+      <if test="verifyState != null" >
+        verify_state = #{verifyState,jdbcType=INTEGER},
+      </if>
+      <if test="verifyDesc != null" >
+        verify_desc = #{verifyDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="verifyTime != null" >
+        verify_time = #{verifyTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where veri_id = #{veriId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="scau.aotu.biz.model.Verification" >
+    update verification
+    set chal_id = #{chalId,jdbcType=VARCHAR},
+      verifitor_id = #{verifitorId,jdbcType=VARCHAR},
+      verify_state = #{verifyState,jdbcType=INTEGER},
+      verify_desc = #{verifyDesc,jdbcType=VARCHAR},
+      verify_time = #{verifyTime,jdbcType=TIMESTAMP}
+    where veri_id = #{veriId,jdbcType=INTEGER}
+  </update>
+</mapper>

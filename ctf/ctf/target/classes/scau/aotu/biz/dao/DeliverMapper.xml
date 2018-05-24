@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="scau.aotu.biz.dao.DeliverMapper" >
+  <resultMap id="BaseResultMap" type="scau.aotu.biz.model.Deliver" >
+    <id column="deli_id" property="deliId" jdbcType="INTEGER" />
+    <result column="chal_id" property="chalId" jdbcType="VARCHAR" />
+    <result column="author_id" property="authorId" jdbcType="VARCHAR" />
+    <result column="deli_time" property="deliTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    deli_id, chal_id, author_id, deli_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="scau.aotu.biz.model.DeliverExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from deliver
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from deliver
+    where deli_id = #{deliId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from deliver
+    where deli_id = #{deliId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="scau.aotu.biz.model.DeliverExample" >
+    delete from deliver
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="scau.aotu.biz.model.Deliver" >
+    insert into deliver (deli_id, chal_id, author_id, 
+      deli_time)
+    values (#{deliId,jdbcType=INTEGER}, #{chalId,jdbcType=VARCHAR}, #{authorId,jdbcType=VARCHAR}, 
+      #{deliTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="scau.aotu.biz.model.Deliver" >
+    insert into deliver
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="deliId != null" >
+        deli_id,
+      </if>
+      <if test="chalId != null" >
+        chal_id,
+      </if>
+      <if test="authorId != null" >
+        author_id,
+      </if>
+      <if test="deliTime != null" >
+        deli_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="deliId != null" >
+        #{deliId,jdbcType=INTEGER},
+      </if>
+      <if test="chalId != null" >
+        #{chalId,jdbcType=VARCHAR},
+      </if>
+      <if test="authorId != null" >
+        #{authorId,jdbcType=VARCHAR},
+      </if>
+      <if test="deliTime != null" >
+        #{deliTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="scau.aotu.biz.model.DeliverExample" resultType="java.lang.Integer" >
+    select count(*) from deliver
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update deliver
+    <set >
+      <if test="record.deliId != null" >
+        deli_id = #{record.deliId,jdbcType=INTEGER},
+      </if>
+      <if test="record.chalId != null" >
+        chal_id = #{record.chalId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.authorId != null" >
+        author_id = #{record.authorId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deliTime != null" >
+        deli_time = #{record.deliTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update deliver
+    set deli_id = #{record.deliId,jdbcType=INTEGER},
+      chal_id = #{record.chalId,jdbcType=VARCHAR},
+      author_id = #{record.authorId,jdbcType=VARCHAR},
+      deli_time = #{record.deliTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="scau.aotu.biz.model.Deliver" >
+    update deliver
+    <set >
+      <if test="chalId != null" >
+        chal_id = #{chalId,jdbcType=VARCHAR},
+      </if>
+      <if test="authorId != null" >
+        author_id = #{authorId,jdbcType=VARCHAR},
+      </if>
+      <if test="deliTime != null" >
+        deli_time = #{deliTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where deli_id = #{deliId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="scau.aotu.biz.model.Deliver" >
+    update deliver
+    set chal_id = #{chalId,jdbcType=VARCHAR},
+      author_id = #{authorId,jdbcType=VARCHAR},
+      deli_time = #{deliTime,jdbcType=TIMESTAMP}
+    where deli_id = #{deliId,jdbcType=INTEGER}
+  </update>
+</mapper>
