@@ -84,7 +84,6 @@
 
         $(function () {
 
-            var alert_btn='<button type="button" class="close" aria-label="Close"><span aria-hidden="true">×</span></button>';
             $('.close').on('click',function () {
                 $('#alert').hide();
             });

@@ -42,9 +42,7 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#">题目</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">考试</a>
-                </li>
+
             </ul>
             <hr class="d-sm-flex d-md-flex d-lg-none">
 

@@ -51,7 +51,7 @@
                 /success = anon
                 /register/** = anon
                 <!-- 其他资源需要认证 -->
-                /** = authc
+                /** = anon
             </value>
         </property>
     </bean>

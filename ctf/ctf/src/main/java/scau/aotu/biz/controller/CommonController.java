@@ -1,5 +1,6 @@
 package scau.aotu.biz.controller;
 
+import com.wf.captcha.utils.CaptchaUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +18,7 @@ import scau.aotu.biz.service.UserService;
 import scau.aotu.core.util.ApplicationUtils;
 import scau.aotu.core.util.MailUtils;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 @Controller
@@ -37,21 +39,43 @@ public class CommonController {
     }
 
     @RequestMapping("/login")
-    public String login(Model model){
-
-
+    public String login(){
         return "login";
-
     }
 
+    @RequestMapping("/login/confirm")
+    public String loginConfirm(@RequestParam("email")String email, @RequestParam("password") String password,
+                               @RequestParam("code")String code, Model model, HttpServletRequest request){
+        System.out.println(email+":"+password+":"+code);
+        CaptchaUtil captcha = new CaptchaUtil();
+        if (captcha == null || !captcha.ver(code, request)) {
+            model.addAttribute("error","邮箱或密码错误");
+            return "login";
+        }
+        User user=userService.getUserByEmail(email);
+        if(user == null){
+            model.addAttribute("error","邮箱或密码错误");
+            return "login";
+        }else if(user.getState() == 0 ){
+            model.addAttribute("error","账号未进行邮箱确认，请到邮箱中确认");
+            return "login";
+        }else if(user.getState() == -1){
+            model.addAttribute("error","账号被锁定，请联系管理员");
+            return "login";
+        } else if(!user.getPassword().equals(password)){
+            model.addAttribute("error","邮箱或密码错误");
+            return "login";
+        }
+        model.addAttribute("username",user.getUserName());
+        return "index";
+    }
     @RequestMapping("/register")
     public String register(){
-
         return "register";
     }
 
     @RequestMapping("/register/confirm")
-    public String confirm(@RequestParam("username") String username, @RequestParam("email") String email, @RequestParam("password") String password,
+    public String registerConfirm(@RequestParam("username") String username, @RequestParam("email") String email, @RequestParam("password") String password,
                           @RequestParam("school") String schoolname,@RequestParam("realname") String realname,@RequestParam("number") String number,
                           @RequestParam("type") String type,Model model, RedirectAttributes redirectAttributes){
 
