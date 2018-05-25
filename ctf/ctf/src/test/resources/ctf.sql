@@ -17,7 +17,7 @@
 DROP TABLE IF EXISTS `user` ;
 
 CREATE TABLE IF NOT EXISTS `user` (
-  `user_id` VARCHAR(31) NOT NULL COMMENT '用户id',
+  `user_id` VARCHAR(63) NOT NULL COMMENT '用户id',
   `email` VARCHAR(31) NOT NULL COMMENT '邮箱',
   `user_name` VARCHAR(31) NOT NULL COMMENT '昵称',
   `password` VARCHAR(63) NULL COMMENT '密码',
@@ -41,7 +41,7 @@ DROP TABLE IF EXISTS `authentication` ;
 
 CREATE TABLE IF NOT EXISTS `authentication` (
   `auth_id` INT NOT NULL AUTO_INCREMENT COMMENT '认证id',
-  `user_id` VARCHAR(31) NULL COMMENT '用户id',
+  `user_id` VARCHAR(63) NULL COMMENT '用户id',
   `code` VARCHAR(63) NULL COMMENT '激活码',
   `auth_type` INT ZEROFILL NULL COMMENT '账号类别：0:注册 1:找回密码',
   `create_time` DATETIME NULL COMMENT '申请时间',
@@ -101,7 +101,7 @@ DROP TABLE IF EXISTS `user_role` ;
 
 CREATE TABLE IF NOT EXISTS `user_role` (
   `user_role_id` INT NOT NULL AUTO_INCREMENT COMMENT '用户权限id',
-  `user_id` VARCHAR(31) NULL COMMENT '用户id',
+  `user_id` VARCHAR(63) NULL COMMENT '用户id',
   `role_id` INT NULL COMMENT '权限id',
   PRIMARY KEY (`user_role_id`))
 ENGINE = InnoDB
@@ -242,7 +242,7 @@ DROP TABLE IF EXISTS `submit` ;
 
 CREATE TABLE IF NOT EXISTS `submit` (
   `sub_id` INT NOT NULL AUTO_INCREMENT COMMENT '题目提交id',
-  `user_id` VARCHAR(31) NULL COMMENT '用户id',
+  `user_id` VARCHAR(63) NULL COMMENT '用户id',
   `chal_id` VARCHAR(31) NULL COMMENT '题目id',
   `sub_state` INT NULL COMMENT '提交状态：0：错误 1：对',
   `sub_flag` VARCHAR(63) NULL COMMENT '提交flag',
@@ -259,7 +259,7 @@ DROP TABLE IF EXISTS `score` ;
 
 CREATE TABLE IF NOT EXISTS `score` (
   `score_id` INT NOT NULL AUTO_INCREMENT COMMENT '积分id',
-  `user_id` VARCHAR(31) NULL COMMENT '用户id',
+  `user_id` VARCHAR(63) NULL COMMENT '用户id',
   `chal_id` VARCHAR(31) NULL COMMENT '题目id',
   `score_type` VARCHAR(15) NULL COMMENT '积分类型:提交flag | 出题 | 查看提示|奖励',
   `score` INT NULL COMMENT '分值：做对题目插入正分| 查看提示插入负分',
@@ -292,7 +292,7 @@ DROP TABLE IF EXISTS `hint_used` ;
 
 CREATE TABLE IF NOT EXISTS `hint_used` (
   `hint_used_id` INT NOT NULL AUTO_INCREMENT COMMENT '提示使用id',
-  `user_id` VARCHAR(31) NULL COMMENT '用户id',
+  `user_id` VARCHAR(63) NULL COMMENT '用户id',
   `chal_id` VARCHAR(31) NULL COMMENT '题目id',
   `hint_id` INT NULL COMMENT '提示id',
   `used_time` DATETIME NULL COMMENT '提示使用时间',
