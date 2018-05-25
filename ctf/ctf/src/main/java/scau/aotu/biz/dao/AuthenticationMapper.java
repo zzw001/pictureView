@@ -20,6 +20,9 @@ public interface AuthenticationMapper {
 
     Authentication selectByPrimaryKey(Integer authId);
 
+    //根据code找到userid
+    String selectByCode(String code);
+
     int updateByExampleSelective(@Param("record") Authentication record, @Param("example") AuthenticationExample example);
 
     int updateByExample(@Param("record") Authentication record, @Param("example") AuthenticationExample example);

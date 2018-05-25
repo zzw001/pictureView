@@ -45,6 +45,30 @@
                         </label>
                         <input class="form-control" type="password" name="password" id="password"/>
                     </div>
+                    <div class="form-group">
+                        <label for="realname">
+                            真实姓名
+                        </label>
+                        <input class="form-control" type="text" name="realname" id="realname"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="school">
+                            学校
+                        </label>
+                        <input class="form-control" type="text" name="school" id="school"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="number">
+                            学号/工号
+                        </label>
+                        <input class="form-control" type="text" name="number" id="number"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="type">
+                            认证类型:0学生 1教师
+                        </label>
+                        <input class="form-control" type="type" name="type" id="type"/>
+                    </div>
                     <div class="row pt-3">
                         <div class="col-md-12">
                             <button type="submit" id="submit" tabindex="5" class="btn btn-md btn-primary btn-outlined float-right">注册</button>
@@ -128,7 +152,7 @@
 
                 if(password.length<6 || password.length>20){
 
-                    $("#alert_context").html("密码长度应该大于6,小于20");
+                    $("#alert_context").html("密码应该大于6,小于20");
                     $("#alert").attr("class","alert alert-danger alert-dismissible");
                     $("#alert").show();
                     $("#password").focus();
@@ -137,6 +161,54 @@
                 }
 
                 $("#password").val($.md5(password));
+
+                var realname = $("#realname").val();
+
+                if(realname.length<2 || realname.length>10){
+
+                    $("#alert_context").html("真实姓名应该大于2,小于10");
+                    $("#alert").attr("class","alert alert-danger alert-dismissible");
+                    $("#alert").show();
+                    $("#realname").focus();
+
+                    return false;
+                }
+
+                var school = $("#school").val();
+
+                if(school.length<4 || school.length>10){
+
+                    $("#alert_context").html("学校应该大于4,小于10");
+                    $("#alert").attr("class","alert alert-danger alert-dismissible");
+                    $("#alert").show();
+                    $("#school").focus();
+
+                    return false;
+                }
+
+                var number = $("#number").val();
+
+                if(number.length<6 || number.length>16){
+
+                    $("#alert_context").html("学号|工号应该大于6,小于16");
+                    $("#alert").attr("class","alert alert-danger alert-dismissible");
+                    $("#alert").show();
+                    $("#number").focus();
+
+                    return false;
+                }
+
+                var type = $("#type").val();
+
+                if(type!='0' && type!='1'){
+
+                    $("#alert_context").html("类型错误");
+                    $("#alert").attr("class","alert alert-danger alert-dismissible");
+                    $("#alert").show();
+                    $("#type").focus();
+
+                    return false;
+                }
 
                 return true;
             });

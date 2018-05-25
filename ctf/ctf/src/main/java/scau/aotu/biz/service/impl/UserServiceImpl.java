@@ -26,4 +26,15 @@ public class UserServiceImpl implements UserService {
     public User getUserByEmail(String email) {
         return userMapper.selectByEmail(email);
     }
+
+    @Override
+    public User getUserByPrimaryKey(String userid) {
+        return userMapper.selectByPrimaryKey(userid);
+    }
+
+    @Override
+    public int update(User user) {
+        userMapper.updateByPrimaryKey(user);
+        return 0;
+    }
 }

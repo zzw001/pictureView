@@ -4,18 +4,32 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import scau.aotu.biz.model.Authentication;
+import scau.aotu.biz.model.School;
 import scau.aotu.biz.model.User;
+import scau.aotu.biz.service.AuthenticationService;
+import scau.aotu.biz.service.SchoolService;
 import scau.aotu.biz.service.UserService;
 import scau.aotu.core.util.ApplicationUtils;
+import scau.aotu.core.util.MailUtils;
+
+import java.util.Date;
 
 @Controller
 public class CommonController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private SchoolService schoolService;
+
+    @Autowired
+    private AuthenticationService authenticationService;
 
     @RequestMapping("/")
     public String index(){
@@ -37,7 +51,11 @@ public class CommonController {
     }
 
     @RequestMapping("/register/confirm")
-    public String confirm(@RequestParam("username") String username, @RequestParam("email") String email, @RequestParam("password") String password, Model model, RedirectAttributes redirectAttributes){
+    public String confirm(@RequestParam("username") String username, @RequestParam("email") String email, @RequestParam("password") String password,
+                          @RequestParam("school") String schoolname,@RequestParam("realname") String realname,@RequestParam("number") String number,
+                          @RequestParam("type") String type,Model model, RedirectAttributes redirectAttributes){
+
+        School school=schoolService.get(schoolname);
 
         if(userService.getUserByUserName(username)!=null){
             System.out.println("username:"+userService.getUserByUserName(username));
@@ -46,16 +64,55 @@ public class CommonController {
         }else if(userService.getUserByEmail(email)!=null){
             model.addAttribute("error","邮箱已存在");
             System.out.println("email:"+userService.getUserByEmail(email));
-            return "register";
+            return "redirect:/register/unsuccess";
+        }else if(school==null){
+            model.addAttribute("error","学校不存在");
+            return "redirect:/register/unsuccess";
         }
-        String code = ApplicationUtils.randomUUID();
+        //主键id未进行验证
         User user = new User();
+        String userid = ApplicationUtils.randomUUID();
+        user.setUserId(userid);
+        user.setEmail(email);
         user.setUserName(username);
         user.setPassword(password);
-        user.setEmail(email);
-        user.setState(1);
-        System.out.println(user+":"+userService.addUser(user));
+        user.setRealName(realname);
+        user.setSchoolId(school.getSchoolId());
+        user.setUserNumber(number);
+        user.setUserType(Integer.parseInt(type));
+        user.setState(0);
+        user.setScore(0);
+        System.out.println(user);
+        int sfl=userService.addUser(user);
+        System.out.println(user+":"+sfl);
+
+        String code = ApplicationUtils.randomUUID();
+        Authentication authentication=new Authentication();
+        authentication.setUserId(userid);
+        authentication.setCode(code);
+        authentication.setAuthType(0);
+        authentication.setCreateTime(new Date());
+        int afl=authenticationService.add(authentication);
+        System.out.println(authentication+":"+afl);
+
+        MailUtils.senMail(email,code);
         return "redirect:/success";
+    }
+
+    @RequestMapping("/register/authenticate/{code}")
+    public String authenticate(@PathVariable("code") String code){
+
+
+        String userid = authenticationService.getUserId(code);
+        User user = userService.getUserByPrimaryKey(userid);
+        if(userid == null){
+            return "authunsuccess";
+        }
+        System.out.println("before:"+user);
+        user.setState(1);
+        userService.update(user);
+        System.out.println("after:"+userService.getUserByPrimaryKey(userid));
+        return "authsuccess";
     }
 
     @RequestMapping("/register/unsuccess")

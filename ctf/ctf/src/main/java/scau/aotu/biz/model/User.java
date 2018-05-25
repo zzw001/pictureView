@@ -100,4 +100,20 @@ public class User {
     public void setScore(Integer score) {
         this.score = score;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId='" + userId + '\'' +
+                ", email='" + email + '\'' +
+                ", userName='" + userName + '\'' +
+                ", password='" + password + '\'' +
+                ", realName='" + realName + '\'' +
+                ", userNumber='" + userNumber + '\'' +
+                ", schoolId=" + schoolId +
+                ", userType=" + userType +
+                ", state=" + state +
+                ", score=" + score +
+                '}';
+    }
 }

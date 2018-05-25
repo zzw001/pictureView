@@ -4,7 +4,7 @@
 
     <div class="jumbotron">
         <div class="container">
-            <h1></h1>
+            <h1>认证成功</h1>
         </div>
     </div>
 </main>

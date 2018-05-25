@@ -31,4 +31,7 @@ public interface UserMapper {
     int updateByPrimaryKeySelective(User record);
 
     int updateByPrimaryKey(User record);
+
+    //更新状态
+    int updateByPrimaryKey();
 }

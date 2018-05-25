@@ -89,6 +89,11 @@
     from authentication
     where auth_id = #{authId,jdbcType=INTEGER}
   </select>
+  <select id="selectByCode" resultType="java.lang.String" parameterType="java.lang.String" >
+    select user_id
+    from authentication
+    where code = #{code,jdbcType=VARCHAR}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from authentication
     where auth_id = #{authId,jdbcType=INTEGER}

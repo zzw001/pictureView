@@ -18,7 +18,11 @@ public interface SchoolMapper {
 
     List<School> selectByExample(SchoolExample example);
 
+    //根据学校id获取学校
     School selectByPrimaryKey(Integer schoolId);
+
+    //根据学校名获取学校
+    School selectBySchoolName(String schoolName);
 
     int updateByExampleSelective(@Param("record") School record, @Param("example") SchoolExample example);
 
