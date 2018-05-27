@@ -20,6 +20,9 @@ public interface UserRoleMapper {
 
     UserRole selectByPrimaryKey(Integer userRoleId);
 
+    //根据userid获取userRole
+    UserRole selectByUserId(String userId);
+
     int updateByExampleSelective(@Param("record") UserRole record, @Param("example") UserRoleExample example);
 
     int updateByExample(@Param("record") UserRole record, @Param("example") UserRoleExample example);

@@ -101,6 +101,27 @@ public class User {
         this.score = score;
     }
 
+    public User() {
+    }
+
+    public User(String userId, String email, String userName, String password, String realName, String userNumber, Integer schoolId, Integer userType, Integer state, Integer score) {
+        this.userId = userId;
+        this.email = email;
+        this.userName = userName;
+        this.password = password;
+        this.realName = realName;
+        this.userNumber = userNumber;
+        this.schoolId = schoolId;
+        this.userType = userType;
+        this.state = state;
+        this.score = score;
+    }
+
+    public User(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
+
     @Override
     public String toString() {
         return "User{" +

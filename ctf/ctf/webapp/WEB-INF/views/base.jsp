@@ -37,36 +37,49 @@
                     <a class="nav-link" href="#">Teams</a>
                 </li>-->
                 <li class="nav-item">
-                    <a class="nav-link" href="#">排行榜</a>
+                    <a class="nav-link" href="/scoreboard">积分榜</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">题目</a>
+                    <a class="nav-link" href="/challengeboard">贡献榜</a>
                 </li>
+                <shiro:authenticated>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/challenge">题目</a>
+                    </li>
+                </shiro:authenticated>
 
             </ul>
             <hr class="d-sm-flex d-md-flex d-lg-none">
 
             <ul class="navbar-nav ml-md-auto d-block d-sm-flex d-md-flex">
+                <shiro:hasRole name="admin">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/">管理</a>
+                    </li>
+                </shiro:hasRole>
 
-                <!--<li class="nav-item">
-                    <a class="nav-link" href="#">Team</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Profile</a>
-                </li>-->
-
-                <!--<li class="nav-item">
-                    <a class="nav-link" href="#">Logout</a>
-                </li>-->
-                <li class="nav-item">
-                    <a class="nav-link" href="/register">注册</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link d-none d-md-block d-lg-block">|</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/login">登录</a>
-                </li>
+                <c:if test="${username == null}">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/register">注册</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link d-none d-md-block d-lg-block">|</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/login">登录</a>
+                    </li>
+                </c:if>
+                <c:if test="${username !=null}">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/team">关于我</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/profile">欢迎${username}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout">退出</a>
+                    </li>
+                </c:if>
             </ul>
         </div>
     </div>
@@ -91,5 +104,6 @@
 <script src="${requestScope.getContextPath}/js/ezq.js"></script>
 <script src="${requestScope.getContextPath}/js/jquery.min.js"></script>
 <script src="${requestScope.getContextPath}/js/vendor/bootstrap.bundle.min.js"></script>
+<script src="${requestScope.getContextPath}/js/style.js"></script>
 
 

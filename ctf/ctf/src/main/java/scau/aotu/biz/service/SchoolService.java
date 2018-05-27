@@ -2,9 +2,15 @@ package scau.aotu.biz.service;
 
 import scau.aotu.biz.model.School;
 
+import java.util.List;
+
 public interface SchoolService {
 
     int add(School school);
 
-    School get(String school_name);
+    School getBySchoolName(String schoolname);
+
+    School getBySchoolId(Integer schoolid);
+
+    List<String> getAllSchoolName();
 }

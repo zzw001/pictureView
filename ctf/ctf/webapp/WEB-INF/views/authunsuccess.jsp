@@ -4,7 +4,10 @@
 
     <div class="jumbotron">
         <div class="container">
-            <h1>认证不成功</h1>
+            <h1>注册</h1>
         </div>
+    </div>
+    <div class="container">
+        <h1>认证失败</h1>
     </div>
 </main>

@@ -34,4 +34,7 @@ public interface UserMapper {
 
     //更新状态
     int updateByPrimaryKey();
+
+    //用户登录验证
+    User authentication(@Param("record") User record);
 }

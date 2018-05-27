@@ -22,7 +22,8 @@
     </bean>
 
     <!--shiroRealm实例-->
-    <bean id="jdbcRealm" class="scau.aotu.core.security.SecurityRealm"></bean>
+    <bean id="jdbcRealm" class="scau.aotu.biz.security.SecurityRealm">
+    </bean>
 
     <!-- Shiro生命周期处理器 -->
     <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
@@ -45,13 +46,17 @@
                 /css/** = anon
                 /img/** = anon
                 /js/** = anon
+                /plugins/** = anon
                 <!-- 登录页允许访问 -->
                 / = anon
                 /login = anon
                 /success = anon
                 /register/** = anon
+                <!--退出-->
+                /logout = logout
                 <!-- 其他资源需要认证 -->
                 /** = anon
+
             </value>
         </property>
     </bean>

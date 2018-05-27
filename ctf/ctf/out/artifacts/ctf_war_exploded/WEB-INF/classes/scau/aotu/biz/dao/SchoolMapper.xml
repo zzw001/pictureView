@@ -80,17 +80,25 @@
       order by ${orderByClause}
     </if>
   </select>
+  <!--学校id查询-->
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
     from school
     where school_id = #{schoolId,jdbcType=INTEGER}
   </select>
+  <!--学校名查询-->
   <select id="selectBySchoolName" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select
     <include refid="Base_Column_List" />
     from school
     where school_name = #{schoolName,jdbcType=VARCHAR}
+  </select>
+  <!--获取所有学校名-->
+  <select id="selectAllSchoolName" resultType="java.lang.String">
+    select
+    school_name
+    from school
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from school

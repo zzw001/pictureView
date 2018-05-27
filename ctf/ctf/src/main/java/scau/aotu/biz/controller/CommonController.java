@@ -1,6 +1,10 @@
 package scau.aotu.biz.controller;
 
 import com.wf.captcha.utils.CaptchaUtil;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,14 +16,18 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import scau.aotu.biz.model.Authentication;
 import scau.aotu.biz.model.School;
 import scau.aotu.biz.model.User;
+import scau.aotu.biz.model.UserRole;
 import scau.aotu.biz.service.AuthenticationService;
 import scau.aotu.biz.service.SchoolService;
+import scau.aotu.biz.service.UserRoleService;
 import scau.aotu.biz.service.UserService;
 import scau.aotu.core.util.ApplicationUtils;
 import scau.aotu.core.util.MailUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.List;
+import java.util.regex.Pattern;
 
 @Controller
 public class CommonController {
@@ -33,6 +41,9 @@ public class CommonController {
     @Autowired
     private AuthenticationService authenticationService;
 
+    @Autowired
+    private UserRoleService userRoleService;
+
     @RequestMapping("/")
     public String index(){
         return "index";
@@ -45,32 +56,196 @@ public class CommonController {
 
     @RequestMapping("/login/confirm")
     public String loginConfirm(@RequestParam("email")String email, @RequestParam("password") String password,
-                               @RequestParam("code")String code, Model model, HttpServletRequest request){
-        System.out.println(email+":"+password+":"+code);
+                               @RequestParam("code")String code, Model model, HttpServletRequest request,RedirectAttributes redirectAttributes){
         CaptchaUtil captcha = new CaptchaUtil();
         if (captcha == null || !captcha.ver(code, request)) {
             model.addAttribute("error","邮箱或密码错误");
             return "login";
         }
-        User user=userService.getUserByEmail(email);
-        if(user == null){
-            model.addAttribute("error","邮箱或密码错误");
-            return "login";
-        }else if(user.getState() == 0 ){
-            model.addAttribute("error","账号未进行邮箱确认，请到邮箱中确认");
-            return "login";
-        }else if(user.getState() == -1){
-            model.addAttribute("error","账号被锁定，请联系管理员");
-            return "login";
-        } else if(!user.getPassword().equals(password)){
-            model.addAttribute("error","邮箱或密码错误");
-            return "login";
+        Subject currentUser = SecurityUtils.getSubject();
+        if(!currentUser.isAuthenticated()){
+            UsernamePasswordToken token = new UsernamePasswordToken(email,password);
+            try {
+                currentUser.login(token);
+                User user=userService.getUserByEmail(email);
+                request.getSession().setAttribute("username",user.getUserName());
+            } catch (AuthenticationException e) {
+                // TODO: handle exception
+                model.addAttribute("error",e.getMessage());
+                return "login";
+            }
+        }else{
+            String shiroUsername =  (String) currentUser.getPrincipal();
+            System.out.println(shiroUsername);
+            if(!shiroUsername.equalsIgnoreCase(email)){
+                UsernamePasswordToken token = new UsernamePasswordToken(email,password);
+                try {
+                    currentUser.login(token);
+                    User user=userService.getUserByEmail(email);
+                    request.getSession().setAttribute("username",user.getUserName());
+                } catch (AuthenticationException e) {
+                    // TODO: handle exception
+                    model.addAttribute("error",e.getMessage());
+                    return "login";
+                }
+            }
         }
-        model.addAttribute("username",user.getUserName());
-        return "index";
+        return "redirect:/";
     }
     @RequestMapping("/register")
-    public String register(){
+    public String register(HttpServletRequest request,Model model){
+        if(request.getMethod() == "POST"){
+            String username = request.getParameter("username").trim();
+            String email = request.getParameter("email").trim();
+            String password = request.getParameter("password");
+            String schoolname = request.getParameter("schoolname").trim();
+            System.out.println(username+":"+email+":"+password+":"+schoolname);
+
+            String regEx = null;
+            Pattern pattern = null;
+            String error = null;
+            User user = new User();
+
+            //校验用户名
+            regEx = "^[\u4E00-\u9FA5a-zA-Z0-9_]*$";
+            pattern = Pattern.compile(regEx);
+
+            if(username.length() == 0){
+                error = "用户名不能为空";
+                model.addAttribute("error",error);
+                List<String> schoolnames = schoolService.getAllSchoolName();
+                model.addAttribute("school","请选择学校");
+                model.addAttribute("schoolnames",schoolnames);
+                return "register";
+            }else if(username.length()>10){
+                error = "用户名长度不能超过10";
+                model.addAttribute("error",error);
+                List<String> schoolnames = schoolService.getAllSchoolName();
+                model.addAttribute("school","请选择学校");
+                model.addAttribute("schoolnames",schoolnames);
+                return "register";
+            }else if(!pattern.matcher(username).matches()){
+                error = "用户名格式不正确,不能包含符号";
+                model.addAttribute("error",error);
+                List<String> schoolnames = schoolService.getAllSchoolName();
+                model.addAttribute("school","请选择学校");
+                model.addAttribute("schoolnames",schoolnames);
+                return "register";
+            }else{
+                User user1 = userService.getUserByUserName(username);
+                if(user1 != null){
+                    error = "用户名已存在";
+                    model.addAttribute("error",error);
+                    List<String> schoolnames = schoolService.getAllSchoolName();
+                    model.addAttribute("school","请选择学校");
+                    model.addAttribute("schoolnames",schoolnames);
+                    return "register";
+                }else{
+                    user.setUserName(username);
+                }
+            }
+
+            //校验邮箱
+            regEx = "^([a-zA-Z0-9_\\-\\.]+)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.)|(([a-zA-Z0-9\\-]+\\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\\]?)$";
+            pattern = Pattern.compile(regEx);
+            if(email.length() == 0){
+                error = "邮箱不能为空";
+                model.addAttribute("error",error);
+                List<String> schoolnames = schoolService.getAllSchoolName();
+                model.addAttribute("school","请选择学校");
+                model.addAttribute("schoolnames",schoolnames);
+                return "register";
+            }else if(email.length() > 30){
+                error = "长度不能超过30";
+                model.addAttribute("error",error);
+                List<String> schoolnames = schoolService.getAllSchoolName();
+                model.addAttribute("school","请选择学校");
+                model.addAttribute("schoolnames",schoolnames);
+                return "register";
+            }else if(!pattern.matcher(email).matches()){
+                error = "邮箱格式不正确";
+                model.addAttribute("error",error);
+                List<String> schoolnames = schoolService.getAllSchoolName();
+                model.addAttribute("school","请选择学校");
+                model.addAttribute("schoolnames",schoolnames);
+                return "register";
+            }else{
+                User user1 = userService.getUserByEmail(email);
+                if(user1 != null){
+                    error = "邮箱已存在";
+                    model.addAttribute("error",error);
+                    List<String> schoolnames = schoolService.getAllSchoolName();
+                    model.addAttribute("school","请选择学校");
+                    model.addAttribute("schoolnames",schoolnames);
+                    return "register";
+                }else{
+                    user.setEmail(email);
+                }
+            }
+
+            //校验密码
+            if(password.length() > 63){
+                error = "密码长度太长";
+                model.addAttribute("error",error);
+                List<String> schoolnames = schoolService.getAllSchoolName();
+                model.addAttribute("school","请选择学校");
+                model.addAttribute("schoolnames",schoolnames);
+                return "register";
+            }else{
+                user.setPassword(password);
+            }
+
+            //校验学校
+            if(schoolname.equals("请选择学校")){
+                error = "请选择学校";
+                model.addAttribute("error",error);
+                List<String> schoolnames = schoolService.getAllSchoolName();
+                model.addAttribute("school","请选择学校");
+                model.addAttribute("schoolnames",schoolnames);
+                return "register";
+            }else{
+                School school = schoolService.getBySchoolName(schoolname);
+                if(school == null){
+                    error = "未选择学校";
+                    model.addAttribute("error",error);
+                    List<String> schoolnames = schoolService.getAllSchoolName();
+                    model.addAttribute("school","请选择学校");
+                    model.addAttribute("schoolnames",schoolnames);
+                    return "register";
+                }else{
+                    user.setSchoolId(school.getSchoolId());
+                }
+            }
+
+            String userid = ApplicationUtils.randomUUID();
+            user.setUserId(userid);
+            user.setUserType(0);
+            user.setState(0);
+            user.setScore(0);
+            userService.addUser(user);
+
+            String code = ApplicationUtils.randomUUID();
+            Authentication authentication = new Authentication();
+            authentication.setUserId(userid);
+            authentication.setCode(code);
+            authentication.setAuthType(0);
+            authentication.setCreateTime(new Date());
+            authenticationService.add(authentication);
+
+            UserRole userRole = new UserRole();
+            userRole.setUserId(userid);
+            userRole.setRoleId(4);
+            userRoleService.add(userRole);
+
+            MailUtils.senMail(email,code);
+            return "redirect:/success";
+        }else{
+            List<String> schoolnames = schoolService.getAllSchoolName();
+            System.out.println(schoolnames);
+            model.addAttribute("school","请选择学校");
+            model.addAttribute("schoolnames",schoolnames);
+        }
+
         return "register";
     }
 
@@ -79,18 +254,19 @@ public class CommonController {
                           @RequestParam("school") String schoolname,@RequestParam("realname") String realname,@RequestParam("number") String number,
                           @RequestParam("type") String type,Model model, RedirectAttributes redirectAttributes){
 
-        School school=schoolService.get(schoolname);
+        School school=schoolService.getBySchoolName(schoolname);
 
-        if(userService.getUserByUserName(username)!=null){
-            System.out.println("username:"+userService.getUserByUserName(username));
+        if(school == null){
+            redirectAttributes.addFlashAttribute("error","学校不存在");
+            return "redirect:/register/unsuccess";
+        }else if(userService.getUserByUserName(username)!=null){
             redirectAttributes.addFlashAttribute("error","用户名已存在");
             return "redirect:/register/unsuccess";
         }else if(userService.getUserByEmail(email)!=null){
-            model.addAttribute("error","邮箱已存在");
-            System.out.println("email:"+userService.getUserByEmail(email));
+            redirectAttributes.addFlashAttribute("error","邮箱已存在");
             return "redirect:/register/unsuccess";
-        }else if(school==null){
-            model.addAttribute("error","学校不存在");
+        }else if(Integer.parseInt(type) != 0 && Integer.parseInt(type) != 1){
+            redirectAttributes.addFlashAttribute("error","类型错误");
             return "redirect:/register/unsuccess";
         }
         //主键id未进行验证
@@ -106,9 +282,7 @@ public class CommonController {
         user.setUserType(Integer.parseInt(type));
         user.setState(0);
         user.setScore(0);
-        System.out.println(user);
-        int sfl=userService.addUser(user);
-        System.out.println(user+":"+sfl);
+        userService.addUser(user);
 
         String code = ApplicationUtils.randomUUID();
         Authentication authentication=new Authentication();
@@ -116,8 +290,16 @@ public class CommonController {
         authentication.setCode(code);
         authentication.setAuthType(0);
         authentication.setCreateTime(new Date());
-        int afl=authenticationService.add(authentication);
-        System.out.println(authentication+":"+afl);
+        authenticationService.add(authentication);
+
+        UserRole userRole = new UserRole();
+        userRole.setUserId(userid);
+        if(Integer.parseInt(type) == 0){
+            userRole.setRoleId(2);
+        }else  if(Integer.parseInt(type) == 1){
+            userRole.setRoleId(3);
+        }
+        userRoleService.add(userRole);
 
         MailUtils.senMail(email,code);
         return "redirect:/success";
@@ -140,14 +322,19 @@ public class CommonController {
     }
 
     @RequestMapping("/register/unsuccess")
-    public String unsuccess(@ModelAttribute("error") String error, Model model){
-
+    public String registerUnsuccess(@ModelAttribute("error") String error, Model model){
         model.addAttribute("error",error);
         return "register";
     }
-    @RequestMapping("/success")
-    public String success(){
 
+    @RequestMapping("/success")
+    public String registerSuccess(){
         return "success";
+    }
+
+    @RequestMapping("/login/success")
+    public String loginSuccess(@ModelAttribute("username") String username, Model model){
+        model.addAttribute("username",username);
+        return "index";
     }
 }

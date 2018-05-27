@@ -21,9 +21,9 @@ function loadchalbyname(chalname) {
 }
 
 function updateChalWindow(obj) {
-    $.get(script_root + "/chals/" + obj.id, function(challenge_data){
-        $.getScript(script_root + obj.script, function(){
-            $.get(script_root + obj.template, function (template_data) {
+    $.get( '/chal/'+obj.id,"", function (challenge_data) {
+        $.getScript(obj.script, function(){
+            $.get(obj.template, function (template_data) {
                 $('#chal-window').empty();
 
                 var template = nunjucks.compile(template_data);
@@ -38,7 +38,7 @@ function updateChalWindow(obj) {
                 window.challenge.preRender();
 
                 challenge_data['description'] = window.challenge.render(challenge_data['description']);
-                challenge_data['script_root'] = script_root;
+                challenge_data['script_root'] = "";
                 challenge_data['solves'] = solves;
 
                 $('#chal-window').append(template.render(challenge_data));
@@ -108,7 +108,6 @@ $("#answer-input").keyup(function(event){
 
 function renderSubmissionResponse(data, cb){
     var result = $.parseJSON(JSON.stringify(data));
-
     var result_message = $('#result-message');
     var result_notification = $('#result-notification');
     var answer_input = $("#answer-input");
@@ -168,7 +167,7 @@ function renderSubmissionResponse(data, cb){
 }
 
 function marksolves(cb) {
-    $.get(script_root + '/solves', function (data) {
+    $.get( '/solves',"", function (data) {
         var solves = $.parseJSON(JSON.stringify(data));
         for (var i = solves['solves'].length - 1; i >= 0; i--) {
             var id = solves['solves'][i].chalid;
@@ -183,13 +182,11 @@ function marksolves(cb) {
 }
 
 function load_user_solves(cb){
-    $.get(script_root + '/solves', function (data) {
+    $.get('/solves',"", function (data) {
         var solves = $.parseJSON(JSON.stringify(data));
-
         for (var i = solves['solves'].length - 1; i >= 0; i--) {
             var chal_id = solves['solves'][i].chalid;
             user_solves.push(chal_id);
-
         }
         if (cb) {
             cb();
@@ -198,7 +195,7 @@ function load_user_solves(cb){
 }
 
 function updatesolves(cb){
-    $.get(script_root + '/chals/solves', function (data) {
+    $.get('/usersolves',"", function (data) {
         var solves = $.parseJSON(JSON.stringify(data));
         var chalids = Object.keys(solves);
 
@@ -214,7 +211,7 @@ function updatesolves(cb){
                     }
                 }
             }
-        };
+        }
         if (cb) {
             cb();
         }
@@ -237,7 +234,7 @@ function getsolves(id){
 }
 
 function loadchals(cb) {
-    $.get(script_root + "/chals", function (data) {
+    $.get("/chals","", function (data) {
         var categories = [];
         challenges = $.parseJSON(JSON.stringify(data));
 
@@ -300,6 +297,7 @@ function loadchals(cb) {
         if (cb){
             cb();
         }
+
     });
 }
 
@@ -361,6 +359,7 @@ $.extend({
 });
 
 var load_location_hash = function () {
+
     if (window.location.hash.length > 0) {
         loadchalbyname(window.location.hash.substring(1));
     }
@@ -390,4 +389,4 @@ $('#chal-window').on('hidden.bs.modal', function() {
     history.replaceState('', document.title, window.location.pathname);
 });
 
-setInterval(update, 300000);
+//setInterval(update, 300000);

@@ -37,4 +37,9 @@ public class UserServiceImpl implements UserService {
         userMapper.updateByPrimaryKey(user);
         return 0;
     }
+
+    @Override
+    public User authentication(User user) {
+        return userMapper.authentication(user);
+    }
 }

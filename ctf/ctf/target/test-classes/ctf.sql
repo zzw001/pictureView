@@ -24,9 +24,9 @@ CREATE TABLE IF NOT EXISTS `user` (
   `real_name` VARCHAR(31) NULL COMMENT '真实姓名',
   `user_number` VARCHAR(15) NULL COMMENT '学号/工号',
   `school_id` INT NULL COMMENT '专业id',
-  `user_type` INT ZEROFILL NULL COMMENT '用户分类:0.学生 1.老师',
-  `state` INT ZEROFILL NULL COMMENT '账号状态：-1:冻结 0:未认证 1:已认证',
-  `score` INT ZEROFILL UNSIGNED NULL COMMENT '总积分',
+  `user_type` INT NULL COMMENT '用户分类:0.学生 1.老师',
+  `state` INT NULL COMMENT '账号状态：-1:冻结 0:未认证 1:已认证',
+  `score` INT UNSIGNED NULL COMMENT '总积分',
   PRIMARY KEY (`user_id`),
   UNIQUE INDEX `email_UNIQUE` (`email` ASC),
   UNIQUE INDEX `user_name_UNIQUE` (`user_name` ASC))
@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS `authentication` (
   `auth_id` INT NOT NULL AUTO_INCREMENT COMMENT '认证id',
   `user_id` VARCHAR(63) NULL COMMENT '用户id',
   `code` VARCHAR(63) NULL COMMENT '激活码',
-  `auth_type` INT ZEROFILL NULL COMMENT '账号类别：0:注册 1:找回密码',
+  `auth_type` INT NULL COMMENT '账号类别：0:注册 1:找回密码',
   `create_time` DATETIME NULL COMMENT '申请时间',
   PRIMARY KEY (`auth_id`))
 ENGINE = InnoDB
@@ -79,6 +79,10 @@ CREATE TABLE IF NOT EXISTS `role` (
 ENGINE = InnoDB
 COMMENT = '角色表';
 
+INSERT INTO `role` (`role_id`, `role_name`, `role_desc`) VALUES ('1', 'admin', '管理员');
+INSERT INTO `role` (`role_id`, `role_name`, `role_desc`) VALUES ('2', 'student', '学生');
+INSERT INTO `role` (`role_id`, `role_name`, `role_desc`) VALUES ('3', 'teacher', '未认证的教师');
+INSERT INTO `role` (`role_id`, `role_name`, `role_desc`) VALUES ('4', 'teacher', '教师');
 
 -- -----------------------------------------------------
 -- Table `control`
@@ -148,6 +152,9 @@ CREATE TABLE IF NOT EXISTS `school` (
 ENGINE = InnoDB
 COMMENT = '学校表';
 
+INSERT INTO `school` (`school_id`, `school_name`) VALUES ('1', '华南农业大学');
+INSERT INTO `school` (`school_id`, `school_name`) VALUES ('2', '华南理工大学');
+INSERT INTO `school` (`school_id`, `school_name`) VALUES ('3', '华南师范大学');
 
 -- -----------------------------------------------------
 -- Table `challenge`
@@ -155,7 +162,7 @@ COMMENT = '学校表';
 DROP TABLE IF EXISTS `challenge` ;
 
 CREATE TABLE IF NOT EXISTS `challenge` (
-  `chal_id` VARCHAR(31) NOT NULL COMMENT '题目id',
+  `chal_id` VARCHAR(63) NOT NULL COMMENT '题目id',
   `chal_name` VARCHAR(31) NULL COMMENT '题目名称',
   `chal_desc` VARCHAR(255) NULL COMMENT '题目描述',
   `cata_id` INT NULL COMMENT '题目分类id',
@@ -164,10 +171,10 @@ CREATE TABLE IF NOT EXISTS `challenge` (
   `chal_source` VARCHAR(31) NULL COMMENT '题目来源： 原创|收录',
   `chal_point` VARCHAR(63) NULL COMMENT '题目考察点',
   `writeup` VARCHAR(255) NULL COMMENT '解题思路',
-  `show_state` INT ZEROFILL NULL COMMENT '显示状态:0:不可见 1:可见',
+  `show_state` INT NULL COMMENT '显示状态:0:不可见 1:可见',
   `author_id` VARCHAR(31) NULL COMMENT '出题人id',
   `verifitor_id` VARCHAR(31) NULL COMMENT '审核人id',
-  `verify_state` INT ZEROFILL NULL COMMENT '审核状态:-1:不通过 0:未申请 1:待审核 2:审核通过',
+  `verify_state` INT NULL COMMENT '审核状态:-1:不通过 0:未申请 1:待审核 2:审核通过',
   PRIMARY KEY (`chal_id`))
 ENGINE = InnoDB
 COMMENT = '题目表';
@@ -180,7 +187,7 @@ DROP TABLE IF EXISTS `file` ;
 
 CREATE TABLE IF NOT EXISTS `file` (
   `file_id` INT NOT NULL AUTO_INCREMENT COMMENT '文件id',
-  `chal_id` VARCHAR(31) NULL COMMENT '题目id',
+  `chal_id` VARCHAR(63) NULL COMMENT '题目id',
   `file_name` VARCHAR(63) NULL COMMENT '文件名称',
   `file_path` VARCHAR(63) NULL COMMENT '文件路径',
   PRIMARY KEY (`file_id`))
@@ -195,7 +202,7 @@ DROP TABLE IF EXISTS `hint` ;
 
 CREATE TABLE IF NOT EXISTS `hint` (
   `hint_id` INT NOT NULL AUTO_INCREMENT COMMENT '题目提示id',
-  `chal_id` VARCHAR(31) NULL COMMENT '题目id',
+  `chal_id` VARCHAR(63) NULL COMMENT '题目id',
   `hint_desc` VARCHAR(255) NULL COMMENT '提示描述',
   `hint_cost` INT UNSIGNED NULL COMMENT '提示消耗积分',
   PRIMARY KEY (`hint_id`))
@@ -210,7 +217,7 @@ DROP TABLE IF EXISTS `deliver` ;
 
 CREATE TABLE IF NOT EXISTS `deliver` (
   `deli_id` INT NOT NULL AUTO_INCREMENT COMMENT '题目投递id',
-  `chal_id` VARCHAR(31) NULL COMMENT '题目id',
+  `chal_id` VARCHAR(63) NULL COMMENT '题目id',
   `author_id` VARCHAR(31) NULL COMMENT '出题人id',
   `deli_time` DATETIME NULL COMMENT '投递时间',
   PRIMARY KEY (`deli_id`))
@@ -225,9 +232,9 @@ DROP TABLE IF EXISTS `verification` ;
 
 CREATE TABLE IF NOT EXISTS `verification` (
   `veri_id` INT NOT NULL AUTO_INCREMENT COMMENT '审核id',
-  `chal_id` VARCHAR(31) NULL COMMENT '题目id',
+  `chal_id` VARCHAR(63) NULL COMMENT '题目id',
   `verifitor_id` VARCHAR(31) NULL COMMENT '审核员id',
-  `verify_state` INT ZEROFILL NULL COMMENT '审核状态-1:不通过 0:未申请 1:待审核 2:审核通过',
+  `verify_state` INT NULL COMMENT '审核状态-1:不通过 0:未申请 1:待审核 2:审核通过',
   `verify_desc` VARCHAR(255) NULL COMMENT '审核时间',
   `verify_time` DATETIME NULL COMMENT '审核时间',
   PRIMARY KEY (`veri_id`))
@@ -243,7 +250,7 @@ DROP TABLE IF EXISTS `submit` ;
 CREATE TABLE IF NOT EXISTS `submit` (
   `sub_id` INT NOT NULL AUTO_INCREMENT COMMENT '题目提交id',
   `user_id` VARCHAR(63) NULL COMMENT '用户id',
-  `chal_id` VARCHAR(31) NULL COMMENT '题目id',
+  `chal_id` VARCHAR(63) NULL COMMENT '题目id',
   `sub_state` INT NULL COMMENT '提交状态：0：错误 1：对',
   `sub_flag` VARCHAR(63) NULL COMMENT '提交flag',
   `sub_time` DATETIME NULL COMMENT '提交时间',
@@ -260,7 +267,7 @@ DROP TABLE IF EXISTS `score` ;
 CREATE TABLE IF NOT EXISTS `score` (
   `score_id` INT NOT NULL AUTO_INCREMENT COMMENT '积分id',
   `user_id` VARCHAR(63) NULL COMMENT '用户id',
-  `chal_id` VARCHAR(31) NULL COMMENT '题目id',
+  `chal_id` VARCHAR(63) NULL COMMENT '题目id',
   `score_type` VARCHAR(15) NULL COMMENT '积分类型:提交flag | 出题 | 查看提示|奖励',
   `score` INT NULL COMMENT '分值：做对题目插入正分| 查看提示插入负分',
   `opt_time` DATETIME NULL COMMENT '操作时间',
@@ -276,9 +283,9 @@ DROP TABLE IF EXISTS `maintenance` ;
 
 CREATE TABLE IF NOT EXISTS `maintenance` (
   `mate_id` INT NOT NULL AUTO_INCREMENT COMMENT '题目维护id',
-  `chal_id` VARCHAR(31) NULL COMMENT '题目id',
+  `chal_id` VARCHAR(63) NULL COMMENT '题目id',
   `matestaff_id` VARCHAR(31) NULL COMMENT '维护员id',
-  `mate_state` INT ZEROFILL NULL COMMENT '维护状态0:不可见 1:可见',
+  `mate_state` INT NULL COMMENT '维护状态0:不可见 1:可见',
   `mate_time` DATETIME NULL COMMENT '维护时间',
   PRIMARY KEY (`mate_id`))
 ENGINE = InnoDB
@@ -293,7 +300,7 @@ DROP TABLE IF EXISTS `hint_used` ;
 CREATE TABLE IF NOT EXISTS `hint_used` (
   `hint_used_id` INT NOT NULL AUTO_INCREMENT COMMENT '提示使用id',
   `user_id` VARCHAR(63) NULL COMMENT '用户id',
-  `chal_id` VARCHAR(31) NULL COMMENT '题目id',
+  `chal_id` VARCHAR(63) NULL COMMENT '题目id',
   `hint_id` INT NULL COMMENT '提示id',
   `used_time` DATETIME NULL COMMENT '提示使用时间',
   PRIMARY KEY (`hint_used_id`))
@@ -314,6 +321,9 @@ CREATE TABLE IF NOT EXISTS `catagory` (
   UNIQUE INDEX `cata_name_UNIQUE` (`cata_name` ASC))
 ENGINE = InnoDB
 COMMENT = '题目分类表';
+
+INSERT INTO `catagory` (`cata_id`, `cata_name`, `cata_desc`) VALUES ('1', 'web安全', '关注web网页安全，保障服务器安全');
+INSERT INTO `catagory` (`cata_id`, `cata_name`, `cata_desc`) VALUES ('2', '密码学', '有关md5加密，sh256加密');
 
 
 -- SET SQL_MODE=@OLD_SQL_MODE;

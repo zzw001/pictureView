@@ -107,6 +107,13 @@
     from user
     where email = #{email,jdbcType=VARCHAR}
   </select>
+  <!-- 用户登录验证查询 -->
+  <select id="authentication" resultMap="BaseResultMap" parameterType="map">
+    select
+    <include refid="Base_Column_List" />
+    from user
+    where email = #{record.email,jdbcType=VARCHAR} and password = #{record.password,jdbcType=CHAR} and state = 1
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from user
     where user_id = #{userId,jdbcType=VARCHAR}

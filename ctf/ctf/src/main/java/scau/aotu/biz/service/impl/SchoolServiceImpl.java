@@ -6,6 +6,8 @@ import scau.aotu.biz.dao.SchoolMapper;
 import scau.aotu.biz.model.School;
 import scau.aotu.biz.service.SchoolService;
 
+import java.util.List;
+
 @Service
 public class SchoolServiceImpl implements SchoolService {
 
@@ -18,7 +20,17 @@ public class SchoolServiceImpl implements SchoolService {
     }
 
     @Override
-    public School get(String school_name) {
+    public School getBySchoolName(String school_name) {
         return schoolMapper.selectBySchoolName(school_name);
+    }
+
+    @Override
+    public School getBySchoolId(Integer schoolid) {
+        return schoolMapper.selectByPrimaryKey(schoolid);
+    }
+
+    @Override
+    public List<String> getAllSchoolName() {
+        return schoolMapper.selectAllSchoolName();
     }
 }

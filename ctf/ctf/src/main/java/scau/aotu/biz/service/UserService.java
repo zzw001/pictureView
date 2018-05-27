@@ -13,4 +13,7 @@ public interface UserService {
     User getUserByEmail(String email);
 
     int update(User user);
+
+    //用户认证
+    User authentication(User user);
 }

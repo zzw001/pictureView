@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Administrator
-  Date: 2018/5/20
-  Time: 0:03
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <jsp:include page='base.jsp'/>
@@ -46,8 +39,7 @@
                     </div>
                     <div class="row pt-3">
                         <input type="text" name = "code" id="code" class="float-left form-control col-md-6"/>
-
-                        <img id = "myPic" src="/images/captcha" class="float-right col-md-6">
+                        <img id ="myPic" src="/images/captcha" class="float-right col-md-6">
                     </div>
                     <div class="row pt-3">
                         <div class="col-md-6">
@@ -69,6 +61,11 @@
     <script type="text/javascript">
 
         $(function () {
+
+            $("#myPic").bind("click",function () {
+                $(this).attr("src","/images/captcha?"+Math.random());
+                return false;
+            });
 
             $('.close').on('click', function () {
                 $('#alert').hide();

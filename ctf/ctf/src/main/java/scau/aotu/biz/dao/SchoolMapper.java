@@ -24,6 +24,9 @@ public interface SchoolMapper {
     //根据学校名获取学校
     School selectBySchoolName(String schoolName);
 
+    //获取所有学校名
+    List<String> selectAllSchoolName();
+
     int updateByExampleSelective(@Param("record") School record, @Param("example") SchoolExample example);
 
     int updateByExample(@Param("record") School record, @Param("example") SchoolExample example);

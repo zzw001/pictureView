@@ -30,4 +30,13 @@ public class Role {
     public void setRoleDesc(String roleDesc) {
         this.roleDesc = roleDesc == null ? null : roleDesc.trim();
     }
+
+    @Override
+    public String toString() {
+        return "Role{" +
+                "roleId=" + roleId +
+                ", roleName='" + roleName + '\'' +
+                ", roleDesc='" + roleDesc + '\'' +
+                '}';
+    }
 }
