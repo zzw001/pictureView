@@ -6,13 +6,11 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
-import scau.aotu.biz.model.Role;
 import scau.aotu.biz.model.User;
 import scau.aotu.biz.service.RoleService;
 import scau.aotu.biz.service.UserService;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class SecurityRealm extends AuthorizingRealm {

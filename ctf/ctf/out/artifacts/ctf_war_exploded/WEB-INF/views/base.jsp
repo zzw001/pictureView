@@ -7,8 +7,6 @@
     <title>ctf训练系统</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon">
-    <link rel="icon" href="img/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="${requestScope.getContextPath}/css/vendor/bootstrap.min.css">
     <link rel="stylesheet" href="${requestScope.getContextPath}/css/vendor/font-awesome/fontawesome-fonts.css" type='text/css'>
     <link rel="stylesheet" href="${requestScope.getContextPath}/css/vendor/font-awesome/fontawesome-all.css" type='text/css'>

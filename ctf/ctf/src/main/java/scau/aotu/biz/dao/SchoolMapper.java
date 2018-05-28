@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Param;
 import scau.aotu.biz.model.School;
 import scau.aotu.biz.model.SchoolExample;
 
+
 public interface SchoolMapper {
     int countByExample(SchoolExample example);
 

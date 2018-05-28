@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import scau.aotu.biz.dao.RoleMapper;
 import scau.aotu.biz.dao.UserRoleMapper;
 import scau.aotu.biz.model.Role;
-import scau.aotu.biz.model.UserRole;
 import scau.aotu.biz.service.RoleService;
 
 @Service

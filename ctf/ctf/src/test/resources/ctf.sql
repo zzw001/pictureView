@@ -80,9 +80,9 @@ ENGINE = InnoDB
 COMMENT = '角色表';
 
 INSERT INTO `role` (`role_id`, `role_name`, `role_desc`) VALUES ('1', 'admin', '管理员');
-INSERT INTO `role` (`role_id`, `role_name`, `role_desc`) VALUES ('2', 'student', '学生');
-INSERT INTO `role` (`role_id`, `role_name`, `role_desc`) VALUES ('3', 'teacher', '未认证的教师');
-INSERT INTO `role` (`role_id`, `role_name`, `role_desc`) VALUES ('4', 'teacher', '教师');
+INSERT INTO `role` (`role_id`, `role_name`, `role_desc`) VALUES ('2', 'school', '学校负责人');
+INSERT INTO `role` (`role_id`, `role_name`, `role_desc`) VALUES ('3', 'teacher', '教师');
+INSERT INTO `role` (`role_id`, `role_name`, `role_desc`) VALUES ('4', 'student', '学生');
 
 -- -----------------------------------------------------
 -- Table `control`
@@ -165,7 +165,7 @@ CREATE TABLE IF NOT EXISTS `challenge` (
   `chal_id` VARCHAR(63) NOT NULL COMMENT '题目id',
   `chal_name` VARCHAR(31) NULL COMMENT '题目名称',
   `chal_desc` VARCHAR(255) NULL COMMENT '题目描述',
-  `cata_id` INT NULL COMMENT '题目分类id',
+  `cate_id` INT NULL COMMENT '题目分类id',
   `flag` VARCHAR(63) NULL COMMENT '题目flag',
   `chal_score` INT UNSIGNED NULL COMMENT '题目分数',
   `chal_source` VARCHAR(31) NULL COMMENT '题目来源： 原创|收录',
@@ -311,19 +311,19 @@ COMMENT = '题目提示使用详情表';
 -- -----------------------------------------------------
 -- Table `catagory`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `catagory` ;
+DROP TABLE IF EXISTS `category` ;
 
-CREATE TABLE IF NOT EXISTS `catagory` (
-  `cata_id` INT NOT NULL AUTO_INCREMENT COMMENT '分类id',
-  `cata_name` VARCHAR(31) NOT NULL COMMENT '分类名字',
-  `cata_desc` VARCHAR(255) NULL COMMENT '分类描述',
-  PRIMARY KEY (`cata_id`),
-  UNIQUE INDEX `cata_name_UNIQUE` (`cata_name` ASC))
+CREATE TABLE IF NOT EXISTS `category` (
+  `cate_id` INT NOT NULL AUTO_INCREMENT COMMENT '分类id',
+  `cate_name` VARCHAR(31) NOT NULL COMMENT '分类名字',
+  `cate_desc` VARCHAR(255) NULL COMMENT '分类描述',
+  PRIMARY KEY (`cate_id`),
+  UNIQUE INDEX `cate_name_UNIQUE` (`cate_name` ASC))
 ENGINE = InnoDB
 COMMENT = '题目分类表';
 
-INSERT INTO `catagory` (`cata_id`, `cata_name`, `cata_desc`) VALUES ('1', 'web安全', '关注web网页安全，保障服务器安全');
-INSERT INTO `catagory` (`cata_id`, `cata_name`, `cata_desc`) VALUES ('2', '密码学', '有关md5加密，sh256加密');
+INSERT INTO `category` (`cate_id`, `cate_name`, `cate_desc`) VALUES ('1', 'web安全', '关注web网页安全，保障服务器安全');
+INSERT INTO `category` (`cate_id`, `cate_name`, `cate_desc`) VALUES ('2', '密码学', '有关md5加密，sh256加密');
 
 
 -- SET SQL_MODE=@OLD_SQL_MODE;

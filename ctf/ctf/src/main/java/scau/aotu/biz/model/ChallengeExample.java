@@ -314,63 +314,63 @@ public class ChallengeExample {
             return (Criteria) this;
         }
 
-        public Criteria andCataIdIsNull() {
-            addCriterion("cata_id is null");
+        public Criteria andCateIdIsNull() {
+            addCriterion("cate_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andCataIdIsNotNull() {
-            addCriterion("cata_id is not null");
+        public Criteria andCateIdIsNotNull() {
+            addCriterion("cate_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andCataIdEqualTo(Integer value) {
-            addCriterion("cata_id =", value, "cataId");
+        public Criteria andCateIdEqualTo(Integer value) {
+            addCriterion("cate_id =", value, "cateId");
             return (Criteria) this;
         }
 
-        public Criteria andCataIdNotEqualTo(Integer value) {
-            addCriterion("cata_id <>", value, "cataId");
+        public Criteria andCateIdNotEqualTo(Integer value) {
+            addCriterion("cate_id <>", value, "cateId");
             return (Criteria) this;
         }
 
-        public Criteria andCataIdGreaterThan(Integer value) {
-            addCriterion("cata_id >", value, "cataId");
+        public Criteria andCateIdGreaterThan(Integer value) {
+            addCriterion("cate_id >", value, "cateId");
             return (Criteria) this;
         }
 
-        public Criteria andCataIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("cata_id >=", value, "cataId");
+        public Criteria andCateIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("cate_id >=", value, "cateId");
             return (Criteria) this;
         }
 
-        public Criteria andCataIdLessThan(Integer value) {
-            addCriterion("cata_id <", value, "cataId");
+        public Criteria andCateIdLessThan(Integer value) {
+            addCriterion("cate_id <", value, "cateId");
             return (Criteria) this;
         }
 
-        public Criteria andCataIdLessThanOrEqualTo(Integer value) {
-            addCriterion("cata_id <=", value, "cataId");
+        public Criteria andCateIdLessThanOrEqualTo(Integer value) {
+            addCriterion("cate_id <=", value, "cateId");
             return (Criteria) this;
         }
 
-        public Criteria andCataIdIn(List<Integer> values) {
-            addCriterion("cata_id in", values, "cataId");
+        public Criteria andCateIdIn(List<Integer> values) {
+            addCriterion("cate_id in", values, "cateId");
             return (Criteria) this;
         }
 
-        public Criteria andCataIdNotIn(List<Integer> values) {
-            addCriterion("cata_id not in", values, "cataId");
+        public Criteria andCateIdNotIn(List<Integer> values) {
+            addCriterion("cate_id not in", values, "cateId");
             return (Criteria) this;
         }
 
-        public Criteria andCataIdBetween(Integer value1, Integer value2) {
-            addCriterion("cata_id between", value1, value2, "cataId");
+        public Criteria andCateIdBetween(Integer value1, Integer value2) {
+            addCriterion("cate_id between", value1, value2, "cateId");
             return (Criteria) this;
         }
 
-        public Criteria andCataIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("cata_id not between", value1, value2, "cataId");
+        public Criteria andCateIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("cate_id not between", value1, value2, "cateId");
             return (Criteria) this;
         }
 

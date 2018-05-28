@@ -30,7 +30,7 @@
                         <label for="email">
                             邮箱
                         </label>
-                        <input class="form-control" type="text" name="email" id="email"  />
+                        <input class="form-control" type="email" name="email" id="email"  />
                     </div>
                     <div class="form-group">
                         <label for="password">

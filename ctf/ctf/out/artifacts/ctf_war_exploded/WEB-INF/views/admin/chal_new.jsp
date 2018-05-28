@@ -13,7 +13,7 @@
                 <div class="row">
                     <div class="col-md-6 offset-md-3">
                         <div id="create-chal-entry-div">
-                            <form method="POST" action="/admin/chal/new" enctype="multipart/form-data">
+                            <form method="POST" action="/admin/chal/new">
                                 <div class="form-group">
                                     <label for="name">题目名字
                                         <i class="far fa-question-circle text-muted cursor-help" data-toggle="tooltip" data-placement="right" title="" data-original-title="The name of your challenge"></i>
@@ -21,10 +21,16 @@
                                     <input class="form-control" name="name" id="name" placeholder="Enter challenge name" type="text">
                                 </div>
                                 <div class="form-group">
-                                    <label for="category">分类
+                                    <label for="catename">分类
                                         <i class="far fa-question-circle text-muted cursor-help" data-toggle="tooltip" data-placement="right" title="" data-original-title="The category of your challenge"></i>
                                     </label>
-                                    <input class="form-control" name="category" id="category" placeholder="Enter challenge category" type="text">
+                                    <c:set var="catename" value="${catename}" scope="request"></c:set>
+                                    <select class="custom-select" name="catename" id="catename">
+                                        <option value="${catename}">${catename}</option>
+                                        <c:forEach items="${categorys}" var="category">
+                                        <option value="${category}" <c:if test="${catename == category}">selected</c:if> >${category}</option>
+                                        </c:forEach>
+                                    </select>
                                 </div>
 
                                 <div class="tab-content">
@@ -44,7 +50,7 @@
                                     <label for="score">积分
                                         <i class="far fa-question-circle text-muted cursor-help" data-toggle="tooltip" data-placement="right" title="" data-original-title="This is how many points are rewarded for solving this challenge."></i>
                                     </label>
-                                    <input class="form-control" name="value" id="score" placeholder="Enter value" required="" type="number">
+                                    <input class="form-control" name="score" id="score" placeholder="Enter value" type="number">
                                 </div>
 
                                 <div class="form-group">
@@ -58,14 +64,14 @@
                                     <label for="point">考查点
 
                                     </label>
-                                    <input class="form-control" name="flag" id="point" placeholder="Enter flag" type="text">
+                                    <input class="form-control" name="point" id="point" placeholder="Enter point" type="text">
                                 </div>
 
                                 <div class="form-group">
                                     <label for="writeup">解题思路
 
                                     </label>
-                                    <input class="form-control" name="flag" id="writeup" placeholder="Enter flag" type="text">
+                                    <input class="form-control" name="writeup" id="writeup" placeholder="Enter writeup" type="text">
                                 </div>
 
                                 <div class="form-group">

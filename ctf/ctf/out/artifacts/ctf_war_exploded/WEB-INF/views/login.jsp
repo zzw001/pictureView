@@ -10,26 +10,18 @@
     <div class="container">
         <div class="row">
             <div class="col-md-6 offset-md-3">
-                <form action="/login/confirm" method="post" accept-charset="utf-8" autocomplete="off" role="form" class="form-horizontal" id="login_form">
-                    <c:choose>
-                        <c:when test="${error!=null&&error.length()>0}">
-                            <div class="alert alert-danger alert-dismissible" role="alert" id="alert">
-                                <div id="alert_context">${error}</div>
-                                <button type="button" class="close" aria-label="Close"><span aria-hidden="true">×</span></button>
-                            </div>
-                        </c:when>
-                        <c:when test="${(error!=null&&error.length()==0)||error==null}">
-                            <div class="alert alert-danger alert-dismissible fade" role="alert" id="alert">
-                                <div id="alert_context"></div>
-                                <button type="button" class="close" aria-label="Close"><span aria-hidden="true">×</span></button>
-                            </div>
-                        </c:when>
-                    </c:choose>
+                <form method="post" accept-charset="utf-8" autocomplete="off" role="form" class="form-horizontal" id="login_form">
+                    <c:if test="${error!=null}">
+                        <div class="alert alert-danger alert-dismissible" role="alert" id="alert">
+                            <div id="alert_context">${error}</div>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                        </div>
+                    </c:if>
                     <div class="form-group">
                         <label for="email">
                             邮箱
                         </label>
-                        <input class="form-control" type="text" name="email" id="email" />
+                        <input class="form-control" type="email" name="email" id="email" />
                     </div>
                     <div class="form-group">
                         <label for="password">
@@ -67,67 +59,19 @@
                 return false;
             });
 
-            $('.close').on('click', function () {
-                $('#alert').hide();
-            });
-
             $("#login_form").submit(function () {
 
-                var code = $("#code").val();
-
-                if (code.length != 5) {
-
-                    $("#alert_context").html("验证码错误");
-                    $("#alert").attr("class", "alert alert-danger alert-dismissible");
-                    $("#alert").show();
-                    $("#code").focus();
-
-                    return false;
+                if($("#email").val().length == 0 ){
+                    $("#email").focus();
+                    return false
                 }
 
-                var email = $("#email").val();
-                var emailReg = /^([a-zA-Z0-9]+[-|_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|-|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{1,3}$/;
-                //var emailReg=/^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9-])+((\.[a-zA-Z0-9-]{2,3}){1,2})$/;
-                if (email.length == 0) {
-
-                    $("#alert_context").html("邮箱不能为空");
-                    $("#alert").attr("class", "alert alert-danger alert-dismissible");
-                    $("#alert").show();
-                    $("#email").focus();
-
-                    return false;
-
-                } else if (email.length >= 32) {
-
-                    $("#alert_context").html("邮箱长度不能超过32位,请更换一个邮箱");
-                    $("#alert").attr("class", "alert alert-danger alert-dismissible");
-                    $("#alert").show();
-                    $("#email").focus();
-
-                    return false;
-                } else if (!emailReg.test(email)) {
-
-                    $("#alert_context").html("邮箱格式不正确");
-                    $("#alert").attr("class", "alert alert-danger alert-dismissible");
-                    $("#alert").show();
-                    $("#email").focus();
-
-                    return false;
-                }
-
-                var password = $("#password").val();
-
-                if (password.length < 6 || password.length > 20) {
-
-                    $("#alert_context").html("密码应该大于6,小于20");
-                    $("#alert").attr("class", "alert alert-danger alert-dismissible");
-                    $("#alert").show();
+                if($("#password").val().length == 0 ){
                     $("#password").focus();
-
-                    return false;
+                    return false
                 }
 
-                $("#password").val($.md5(password));
+                $("#password").val($.md5($("#password").val()));
 
                 return true;
             });

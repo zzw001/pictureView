@@ -40,25 +40,25 @@
         </javaClientGenerator>
 
         <!--对应数据库表名 如果是多个的话，写多行-->
-        <table tableName="user"></table>
-        <table tableName="authentication"></table>
-        <table tableName="permission"></table>
-        <table tableName="role"></table>
-        <table tableName="control"></table>
-        <table tableName="user_role"></table>
-        <table tableName="role_per"></table>
-        <table tableName="per_ctl"></table>
-        <table tableName="school"></table>
+        <table tableName="category"></table>
         <table tableName="challenge"></table>
+        <table tableName="authentication"></table>
+        <table tableName="control"></table>
+        <table tableName="deliver"></table>
         <table tableName="file"></table>
         <table tableName="hint"></table>
-        <table tableName="deliver"></table>
-        <table tableName="verification"></table>
+        <table tableName="hint_used"></table>
+        <table tableName="maintenance"></table>
+        <table tableName="per_ctl"></table>
+        <table tableName="permission"></table>
+        <table tableName="role"></table>
+        <table tableName="role_per"></table>
+        <table tableName="school"></table>
         <table tableName="score"></table>
         <table tableName="submit"></table>
-        <table tableName="maintenance"></table>
-        <table tableName="hint_used"></table>
-        <table tableName="catagory"></table>
+        <table tableName="user"></table>
+        <table tableName="user_role"></table>
+        <table tableName="verification"></table>
 
     </context>
 </generatorConfiguration>

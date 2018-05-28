@@ -38,6 +38,10 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/admin/chal/new">出题</a>
                 </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/chal/all">题目列表</a>
+                </li>
             </ul>
         </div>
     </div>

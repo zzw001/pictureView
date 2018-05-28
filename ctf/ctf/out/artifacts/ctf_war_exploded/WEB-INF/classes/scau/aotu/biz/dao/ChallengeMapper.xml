@@ -1,40 +1,40 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="scau.aotu.biz.dao.ChallengeMapper" >
-  <resultMap id="BaseResultMap" type="scau.aotu.biz.model.Challenge" >
-    <id column="chal_id" property="chalId" jdbcType="VARCHAR" />
-    <result column="chal_name" property="chalName" jdbcType="VARCHAR" />
-    <result column="chal_desc" property="chalDesc" jdbcType="VARCHAR" />
-    <result column="cata_id" property="cataId" jdbcType="INTEGER" />
-    <result column="flag" property="flag" jdbcType="VARCHAR" />
-    <result column="chal_score" property="chalScore" jdbcType="INTEGER" />
-    <result column="chal_source" property="chalSource" jdbcType="VARCHAR" />
-    <result column="chal_point" property="chalPoint" jdbcType="VARCHAR" />
-    <result column="writeup" property="writeup" jdbcType="VARCHAR" />
-    <result column="show_state" property="showState" jdbcType="INTEGER" />
-    <result column="author_id" property="authorId" jdbcType="VARCHAR" />
-    <result column="verifitor_id" property="verifitorId" jdbcType="VARCHAR" />
-    <result column="verify_state" property="verifyState" jdbcType="INTEGER" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="scau.aotu.biz.dao.ChallengeMapper">
+  <resultMap id="BaseResultMap" type="scau.aotu.biz.model.Challenge">
+    <id column="chal_id" jdbcType="VARCHAR" property="chalId" />
+    <result column="chal_name" jdbcType="VARCHAR" property="chalName" />
+    <result column="chal_desc" jdbcType="VARCHAR" property="chalDesc" />
+    <result column="cate_id" jdbcType="INTEGER" property="cateId" />
+    <result column="flag" jdbcType="VARCHAR" property="flag" />
+    <result column="chal_score" jdbcType="INTEGER" property="chalScore" />
+    <result column="chal_source" jdbcType="VARCHAR" property="chalSource" />
+    <result column="chal_point" jdbcType="VARCHAR" property="chalPoint" />
+    <result column="writeup" jdbcType="VARCHAR" property="writeup" />
+    <result column="show_state" jdbcType="INTEGER" property="showState" />
+    <result column="author_id" jdbcType="VARCHAR" property="authorId" />
+    <result column="verifitor_id" jdbcType="VARCHAR" property="verifitorId" />
+    <result column="verify_state" jdbcType="INTEGER" property="verifyState" />
   </resultMap>
-  <sql id="Example_Where_Clause" >
-    <where >
-      <foreach collection="oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
                   and ${criterion.condition}
                 </when>
-                <when test="criterion.singleValue" >
+                <when test="criterion.singleValue">
                   and ${criterion.condition} #{criterion.value}
                 </when>
-                <when test="criterion.betweenValue" >
+                <when test="criterion.betweenValue">
                   and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                 </when>
-                <when test="criterion.listValue" >
+                <when test="criterion.listValue">
                   and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
                     #{listItem}
                   </foreach>
                 </when>
@@ -45,25 +45,25 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Update_By_Example_Where_Clause" >
-    <where >
-      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
                   and ${criterion.condition}
                 </when>
-                <when test="criterion.singleValue" >
+                <when test="criterion.singleValue">
                   and ${criterion.condition} #{criterion.value}
                 </when>
-                <when test="criterion.betweenValue" >
+                <when test="criterion.betweenValue">
                   and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                 </when>
-                <when test="criterion.listValue" >
+                <when test="criterion.listValue">
                   and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
                     #{listItem}
                   </foreach>
                 </when>
@@ -74,196 +74,196 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Base_Column_List" >
-    chal_id, chal_name, chal_desc, cata_id, flag, chal_score, chal_source, chal_point, 
+  <sql id="Base_Column_List">
+    chal_id, chal_name, chal_desc, cate_id, flag, chal_score, chal_source, chal_point, 
     writeup, show_state, author_id, verifitor_id, verify_state
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="scau.aotu.biz.model.ChallengeExample" >
+  <select id="selectByExample" parameterType="scau.aotu.biz.model.ChallengeExample" resultMap="BaseResultMap">
     select
-    <if test="distinct" >
+    <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
     from challenge
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
-    <if test="orderByClause != null" >
+    <if test="orderByClause != null">
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from challenge
     where chal_id = #{chalId,jdbcType=VARCHAR}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from challenge
     where chal_id = #{chalId,jdbcType=VARCHAR}
   </delete>
-  <delete id="deleteByExample" parameterType="scau.aotu.biz.model.ChallengeExample" >
+  <delete id="deleteByExample" parameterType="scau.aotu.biz.model.ChallengeExample">
     delete from challenge
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="scau.aotu.biz.model.Challenge" >
+  <insert id="insert" parameterType="scau.aotu.biz.model.Challenge">
     insert into challenge (chal_id, chal_name, chal_desc, 
-      cata_id, flag, chal_score, 
+      cate_id, flag, chal_score, 
       chal_source, chal_point, writeup, 
       show_state, author_id, verifitor_id, 
       verify_state)
     values (#{chalId,jdbcType=VARCHAR}, #{chalName,jdbcType=VARCHAR}, #{chalDesc,jdbcType=VARCHAR}, 
-      #{cataId,jdbcType=INTEGER}, #{flag,jdbcType=VARCHAR}, #{chalScore,jdbcType=INTEGER}, 
+      #{cateId,jdbcType=INTEGER}, #{flag,jdbcType=VARCHAR}, #{chalScore,jdbcType=INTEGER}, 
       #{chalSource,jdbcType=VARCHAR}, #{chalPoint,jdbcType=VARCHAR}, #{writeup,jdbcType=VARCHAR}, 
       #{showState,jdbcType=INTEGER}, #{authorId,jdbcType=VARCHAR}, #{verifitorId,jdbcType=VARCHAR}, 
       #{verifyState,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="scau.aotu.biz.model.Challenge" >
+  <insert id="insertSelective" parameterType="scau.aotu.biz.model.Challenge">
     insert into challenge
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="chalId != null" >
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="chalId != null">
         chal_id,
       </if>
-      <if test="chalName != null" >
+      <if test="chalName != null">
         chal_name,
       </if>
-      <if test="chalDesc != null" >
+      <if test="chalDesc != null">
         chal_desc,
       </if>
-      <if test="cataId != null" >
-        cata_id,
+      <if test="cateId != null">
+        cate_id,
       </if>
-      <if test="flag != null" >
+      <if test="flag != null">
         flag,
       </if>
-      <if test="chalScore != null" >
+      <if test="chalScore != null">
         chal_score,
       </if>
-      <if test="chalSource != null" >
+      <if test="chalSource != null">
         chal_source,
       </if>
-      <if test="chalPoint != null" >
+      <if test="chalPoint != null">
         chal_point,
       </if>
-      <if test="writeup != null" >
+      <if test="writeup != null">
         writeup,
       </if>
-      <if test="showState != null" >
+      <if test="showState != null">
         show_state,
       </if>
-      <if test="authorId != null" >
+      <if test="authorId != null">
         author_id,
       </if>
-      <if test="verifitorId != null" >
+      <if test="verifitorId != null">
         verifitor_id,
       </if>
-      <if test="verifyState != null" >
+      <if test="verifyState != null">
         verify_state,
       </if>
     </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="chalId != null" >
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="chalId != null">
         #{chalId,jdbcType=VARCHAR},
       </if>
-      <if test="chalName != null" >
+      <if test="chalName != null">
         #{chalName,jdbcType=VARCHAR},
       </if>
-      <if test="chalDesc != null" >
+      <if test="chalDesc != null">
         #{chalDesc,jdbcType=VARCHAR},
       </if>
-      <if test="cataId != null" >
-        #{cataId,jdbcType=INTEGER},
+      <if test="cateId != null">
+        #{cateId,jdbcType=INTEGER},
       </if>
-      <if test="flag != null" >
+      <if test="flag != null">
         #{flag,jdbcType=VARCHAR},
       </if>
-      <if test="chalScore != null" >
+      <if test="chalScore != null">
         #{chalScore,jdbcType=INTEGER},
       </if>
-      <if test="chalSource != null" >
+      <if test="chalSource != null">
         #{chalSource,jdbcType=VARCHAR},
       </if>
-      <if test="chalPoint != null" >
+      <if test="chalPoint != null">
         #{chalPoint,jdbcType=VARCHAR},
       </if>
-      <if test="writeup != null" >
+      <if test="writeup != null">
         #{writeup,jdbcType=VARCHAR},
       </if>
-      <if test="showState != null" >
+      <if test="showState != null">
         #{showState,jdbcType=INTEGER},
       </if>
-      <if test="authorId != null" >
+      <if test="authorId != null">
         #{authorId,jdbcType=VARCHAR},
       </if>
-      <if test="verifitorId != null" >
+      <if test="verifitorId != null">
         #{verifitorId,jdbcType=VARCHAR},
       </if>
-      <if test="verifyState != null" >
+      <if test="verifyState != null">
         #{verifyState,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="scau.aotu.biz.model.ChallengeExample" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="scau.aotu.biz.model.ChallengeExample" resultType="java.lang.Integer">
     select count(*) from challenge
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <update id="updateByExampleSelective" parameterType="map" >
+  <update id="updateByExampleSelective" parameterType="map">
     update challenge
-    <set >
-      <if test="record.chalId != null" >
+    <set>
+      <if test="record.chalId != null">
         chal_id = #{record.chalId,jdbcType=VARCHAR},
       </if>
-      <if test="record.chalName != null" >
+      <if test="record.chalName != null">
         chal_name = #{record.chalName,jdbcType=VARCHAR},
       </if>
-      <if test="record.chalDesc != null" >
+      <if test="record.chalDesc != null">
         chal_desc = #{record.chalDesc,jdbcType=VARCHAR},
       </if>
-      <if test="record.cataId != null" >
-        cata_id = #{record.cataId,jdbcType=INTEGER},
+      <if test="record.cateId != null">
+        cate_id = #{record.cateId,jdbcType=INTEGER},
       </if>
-      <if test="record.flag != null" >
+      <if test="record.flag != null">
         flag = #{record.flag,jdbcType=VARCHAR},
       </if>
-      <if test="record.chalScore != null" >
+      <if test="record.chalScore != null">
         chal_score = #{record.chalScore,jdbcType=INTEGER},
       </if>
-      <if test="record.chalSource != null" >
+      <if test="record.chalSource != null">
         chal_source = #{record.chalSource,jdbcType=VARCHAR},
       </if>
-      <if test="record.chalPoint != null" >
+      <if test="record.chalPoint != null">
         chal_point = #{record.chalPoint,jdbcType=VARCHAR},
       </if>
-      <if test="record.writeup != null" >
+      <if test="record.writeup != null">
         writeup = #{record.writeup,jdbcType=VARCHAR},
       </if>
-      <if test="record.showState != null" >
+      <if test="record.showState != null">
         show_state = #{record.showState,jdbcType=INTEGER},
       </if>
-      <if test="record.authorId != null" >
+      <if test="record.authorId != null">
         author_id = #{record.authorId,jdbcType=VARCHAR},
       </if>
-      <if test="record.verifitorId != null" >
+      <if test="record.verifitorId != null">
         verifitor_id = #{record.verifitorId,jdbcType=VARCHAR},
       </if>
-      <if test="record.verifyState != null" >
+      <if test="record.verifyState != null">
         verify_state = #{record.verifyState,jdbcType=INTEGER},
       </if>
     </set>
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByExample" parameterType="map" >
+  <update id="updateByExample" parameterType="map">
     update challenge
     set chal_id = #{record.chalId,jdbcType=VARCHAR},
       chal_name = #{record.chalName,jdbcType=VARCHAR},
       chal_desc = #{record.chalDesc,jdbcType=VARCHAR},
-      cata_id = #{record.cataId,jdbcType=INTEGER},
+      cate_id = #{record.cateId,jdbcType=INTEGER},
       flag = #{record.flag,jdbcType=VARCHAR},
       chal_score = #{record.chalScore,jdbcType=INTEGER},
       chal_source = #{record.chalSource,jdbcType=VARCHAR},
@@ -273,57 +273,57 @@
       author_id = #{record.authorId,jdbcType=VARCHAR},
       verifitor_id = #{record.verifitorId,jdbcType=VARCHAR},
       verify_state = #{record.verifyState,jdbcType=INTEGER}
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="scau.aotu.biz.model.Challenge" >
+  <update id="updateByPrimaryKeySelective" parameterType="scau.aotu.biz.model.Challenge">
     update challenge
-    <set >
-      <if test="chalName != null" >
+    <set>
+      <if test="chalName != null">
         chal_name = #{chalName,jdbcType=VARCHAR},
       </if>
-      <if test="chalDesc != null" >
+      <if test="chalDesc != null">
         chal_desc = #{chalDesc,jdbcType=VARCHAR},
       </if>
-      <if test="cataId != null" >
-        cata_id = #{cataId,jdbcType=INTEGER},
+      <if test="cateId != null">
+        cate_id = #{cateId,jdbcType=INTEGER},
       </if>
-      <if test="flag != null" >
+      <if test="flag != null">
         flag = #{flag,jdbcType=VARCHAR},
       </if>
-      <if test="chalScore != null" >
+      <if test="chalScore != null">
         chal_score = #{chalScore,jdbcType=INTEGER},
       </if>
-      <if test="chalSource != null" >
+      <if test="chalSource != null">
         chal_source = #{chalSource,jdbcType=VARCHAR},
       </if>
-      <if test="chalPoint != null" >
+      <if test="chalPoint != null">
         chal_point = #{chalPoint,jdbcType=VARCHAR},
       </if>
-      <if test="writeup != null" >
+      <if test="writeup != null">
         writeup = #{writeup,jdbcType=VARCHAR},
       </if>
-      <if test="showState != null" >
+      <if test="showState != null">
         show_state = #{showState,jdbcType=INTEGER},
       </if>
-      <if test="authorId != null" >
+      <if test="authorId != null">
         author_id = #{authorId,jdbcType=VARCHAR},
       </if>
-      <if test="verifitorId != null" >
+      <if test="verifitorId != null">
         verifitor_id = #{verifitorId,jdbcType=VARCHAR},
       </if>
-      <if test="verifyState != null" >
+      <if test="verifyState != null">
         verify_state = #{verifyState,jdbcType=INTEGER},
       </if>
     </set>
     where chal_id = #{chalId,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="scau.aotu.biz.model.Challenge" >
+  <update id="updateByPrimaryKey" parameterType="scau.aotu.biz.model.Challenge">
     update challenge
     set chal_name = #{chalName,jdbcType=VARCHAR},
       chal_desc = #{chalDesc,jdbcType=VARCHAR},
-      cata_id = #{cataId,jdbcType=INTEGER},
+      cate_id = #{cateId,jdbcType=INTEGER},
       flag = #{flag,jdbcType=VARCHAR},
       chal_score = #{chalScore,jdbcType=INTEGER},
       chal_source = #{chalSource,jdbcType=VARCHAR},
@@ -335,4 +335,5 @@
       verify_state = #{verifyState,jdbcType=INTEGER}
     where chal_id = #{chalId,jdbcType=VARCHAR}
   </update>
+
 </mapper>

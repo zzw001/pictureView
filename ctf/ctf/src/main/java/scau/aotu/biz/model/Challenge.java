@@ -7,7 +7,7 @@ public class Challenge {
 
     private String chalDesc;
 
-    private Integer cataId;
+    private Integer cateId;
 
     private String flag;
 
@@ -51,12 +51,12 @@ public class Challenge {
         this.chalDesc = chalDesc == null ? null : chalDesc.trim();
     }
 
-    public Integer getCataId() {
-        return cataId;
+    public Integer getCateId() {
+        return cateId;
     }
 
-    public void setCataId(Integer cataId) {
-        this.cataId = cataId;
+    public void setCateId(Integer cateId) {
+        this.cateId = cateId;
     }
 
     public String getFlag() {
@@ -129,5 +129,24 @@ public class Challenge {
 
     public void setVerifyState(Integer verifyState) {
         this.verifyState = verifyState;
+    }
+
+    @Override
+    public String toString() {
+        return "Challenge{" +
+                "chalId='" + chalId + '\'' +
+                ", chalName='" + chalName + '\'' +
+                ", chalDesc='" + chalDesc + '\'' +
+                ", cateId=" + cateId +
+                ", flag='" + flag + '\'' +
+                ", chalScore=" + chalScore +
+                ", chalSource='" + chalSource + '\'' +
+                ", chalPoint='" + chalPoint + '\'' +
+                ", writeup='" + writeup + '\'' +
+                ", showState=" + showState +
+                ", authorId='" + authorId + '\'' +
+                ", verifitorId='" + verifitorId + '\'' +
+                ", verifyState=" + verifyState +
+                '}';
     }
 }

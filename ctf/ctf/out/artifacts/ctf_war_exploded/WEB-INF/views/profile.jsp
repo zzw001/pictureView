@@ -13,7 +13,7 @@
                 <c:if test="${success!=null}">
                     <div class="alert alert-success alert-dismissable submit-row" role="alert">
                         <strong>Success!</strong>
-                        Your profile has been updated
+                        ${success}
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
                     </div>
                 </c:if>
@@ -27,7 +27,7 @@
                     </div>
                 </c:forEach>
 
-                <form method="post" accept-charset="utf-8" autocomplete="off" role="form" class="form-horizontal">
+                <form method="post" accept-charset="utf-8" autocomplete="off" role="form" class="form-horizontal" id="profile_form">
                     <div class="form-group">
                         <label for="username">
                             用户名
@@ -44,7 +44,7 @@
                         <label for="currentpassword">
                             当前密码
                         </label>
-                        <input class="form-control" type="password" name="currentpassword" id="currentpassword" />
+                        <input class="form-control" type="password" name="currentpassword" id="currentpassword" value=""/>
                     </div>
                     <div class="form-group">
                         <label for="newpassword">
@@ -56,7 +56,7 @@
                         <label for="realname">
                             真实姓名
                         </label>
-                        <input class="form-control" type="text" name="country" id="realname" value="${user.realName}" />
+                        <input class="form-control" type="text" name="realname" id="realname" value="${user.realName}" />
                     </div>
 
                     <div class="form-group">
@@ -77,4 +77,18 @@
             </div>
         </div>
     </div>
+    <script src="${requestScope.getContextPath}/js/vendor/jquery.md5.js"></script>
+    <script>
+        $(function () {
+            $("#profile_form").submit(function () {
+                if($("#currentpassword").val().length !=0){
+                    $("#currentpassword").val($.md5($("#currentpassword").val()));
+                }
+               if($("#newpassword").val().length !=0){
+                   $("#newpassword").val($.md5($("#newpassword").val()));
+                }
+                return true;
+            });
+        })
+    </script>
 </main>

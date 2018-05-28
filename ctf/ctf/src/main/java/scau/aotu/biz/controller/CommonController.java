@@ -11,8 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import scau.aotu.biz.model.Authentication;
 import scau.aotu.biz.model.School;
 import scau.aotu.biz.model.User;
@@ -50,34 +48,20 @@ public class CommonController {
     }
 
     @RequestMapping("/login")
-    public String login(){
-        return "login";
-    }
+    public String login(HttpServletRequest request,Model model){
+        if(request.getMethod() == "POST"){
 
-    @RequestMapping("/login/confirm")
-    public String loginConfirm(@RequestParam("email")String email, @RequestParam("password") String password,
-                               @RequestParam("code")String code, Model model, HttpServletRequest request,RedirectAttributes redirectAttributes){
-        CaptchaUtil captcha = new CaptchaUtil();
-        if (captcha == null || !captcha.ver(code, request)) {
-            model.addAttribute("error","邮箱或密码错误");
-            return "login";
-        }
-        Subject currentUser = SecurityUtils.getSubject();
-        if(!currentUser.isAuthenticated()){
-            UsernamePasswordToken token = new UsernamePasswordToken(email,password);
-            try {
-                currentUser.login(token);
-                User user=userService.getUserByEmail(email);
-                request.getSession().setAttribute("username",user.getUserName());
-            } catch (AuthenticationException e) {
-                // TODO: handle exception
-                model.addAttribute("error",e.getMessage());
+            String email = request.getParameter("email").trim();
+            String password = request.getParameter("password");
+            String code = request.getParameter("code").trim();
+
+            CaptchaUtil captcha = new CaptchaUtil();
+            if (code == null || !captcha.ver(code, request)) {
+                model.addAttribute("error","验证码错误");
                 return "login";
             }
-        }else{
-            String shiroUsername =  (String) currentUser.getPrincipal();
-            System.out.println(shiroUsername);
-            if(!shiroUsername.equalsIgnoreCase(email)){
+            Subject currentUser = SecurityUtils.getSubject();
+            if(!currentUser.isAuthenticated()){
                 UsernamePasswordToken token = new UsernamePasswordToken(email,password);
                 try {
                     currentUser.login(token);
@@ -85,13 +69,30 @@ public class CommonController {
                     request.getSession().setAttribute("username",user.getUserName());
                 } catch (AuthenticationException e) {
                     // TODO: handle exception
-                    model.addAttribute("error",e.getMessage());
+                    model.addAttribute("error","邮箱或密码错误");
                     return "login";
                 }
+            }else{
+                String shiroUsername =  (String) currentUser.getPrincipal();
+                System.out.println(shiroUsername);
+                if(!shiroUsername.equalsIgnoreCase(email)){
+                    UsernamePasswordToken token = new UsernamePasswordToken(email,password);
+                    try {
+                        currentUser.login(token);
+                        User user=userService.getUserByEmail(email);
+                        request.getSession().setAttribute("username",user.getUserName());
+                    } catch (AuthenticationException e) {
+                        // TODO: handle exception
+                        model.addAttribute("error","邮箱或密码错误");
+                        return "login";
+                    }
+                }
             }
+            return "redirect:/";
         }
-        return "redirect:/";
+        return "login";
     }
+
     @RequestMapping("/register")
     public String register(HttpServletRequest request,Model model){
         if(request.getMethod() == "POST"){
@@ -156,7 +157,7 @@ public class CommonController {
                 model.addAttribute("schoolnames",schoolnames);
                 return "register";
             }else if(email.length() > 30){
-                error = "长度不能超过30";
+                error = "邮箱长度不能超过30";
                 model.addAttribute("error",error);
                 List<String> schoolnames = schoolService.getAllSchoolName();
                 model.addAttribute("school","请选择学校");
@@ -247,62 +248,6 @@ public class CommonController {
         }
 
         return "register";
-    }
-
-    @RequestMapping("/register/confirm")
-    public String registerConfirm(@RequestParam("username") String username, @RequestParam("email") String email, @RequestParam("password") String password,
-                          @RequestParam("school") String schoolname,@RequestParam("realname") String realname,@RequestParam("number") String number,
-                          @RequestParam("type") String type,Model model, RedirectAttributes redirectAttributes){
-
-        School school=schoolService.getBySchoolName(schoolname);
-
-        if(school == null){
-            redirectAttributes.addFlashAttribute("error","学校不存在");
-            return "redirect:/register/unsuccess";
-        }else if(userService.getUserByUserName(username)!=null){
-            redirectAttributes.addFlashAttribute("error","用户名已存在");
-            return "redirect:/register/unsuccess";
-        }else if(userService.getUserByEmail(email)!=null){
-            redirectAttributes.addFlashAttribute("error","邮箱已存在");
-            return "redirect:/register/unsuccess";
-        }else if(Integer.parseInt(type) != 0 && Integer.parseInt(type) != 1){
-            redirectAttributes.addFlashAttribute("error","类型错误");
-            return "redirect:/register/unsuccess";
-        }
-        //主键id未进行验证
-        User user = new User();
-        String userid = ApplicationUtils.randomUUID();
-        user.setUserId(userid);
-        user.setEmail(email);
-        user.setUserName(username);
-        user.setPassword(password);
-        user.setRealName(realname);
-        user.setSchoolId(school.getSchoolId());
-        user.setUserNumber(number);
-        user.setUserType(Integer.parseInt(type));
-        user.setState(0);
-        user.setScore(0);
-        userService.addUser(user);
-
-        String code = ApplicationUtils.randomUUID();
-        Authentication authentication=new Authentication();
-        authentication.setUserId(userid);
-        authentication.setCode(code);
-        authentication.setAuthType(0);
-        authentication.setCreateTime(new Date());
-        authenticationService.add(authentication);
-
-        UserRole userRole = new UserRole();
-        userRole.setUserId(userid);
-        if(Integer.parseInt(type) == 0){
-            userRole.setRoleId(2);
-        }else  if(Integer.parseInt(type) == 1){
-            userRole.setRoleId(3);
-        }
-        userRoleService.add(userRole);
-
-        MailUtils.senMail(email,code);
-        return "redirect:/success";
     }
 
     @RequestMapping("/register/authenticate/{code}")
